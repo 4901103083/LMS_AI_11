@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bài 9 - Phiếu học tập và MC9</title>
+    <style>
+        :root { color-scheme: light; }
+        body { max-width: 900px; margin: 0 auto; padding: 24px; color: #202b38; font: 16px/1.6 Arial, sans-serif; }
+        h1, h2, h3 { color: #245c43; line-height: 1.25; }
+        h1 { border-bottom: 3px solid #8fbc8f; padding-bottom: 12px; }
+        section { margin: 24px 0; padding: 18px; border: 1px solid #cbd8ce; border-radius: 12px; }
+        .note { background: #f2f8f2; border-left: 5px solid #4f8a5b; padding: 12px 16px; }
+        .fiction { background: #fff8e8; border-color: #dfc77b; }
+        .card { display: inline-block; vertical-align: top; width: 26%; min-width: 180px; min-height: 100px; margin: 6px; padding: 12px; border: 2px dashed #829487; border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+        th, td { border: 1px solid #78877b; padding: 9px; text-align: left; vertical-align: top; }
+        th { background: #edf5ed; }
+        td.blank { height: 54px; }
+        code, .prompt { background: #f4f6f8; padding: 2px 5px; }
+        .prompt { display: block; padding: 12px; white-space: pre-wrap; border: 1px solid #d5dbe0; border-radius: 6px; }
+        .small { color: #53615a; font-size: 14px; }
+        @media print {
+            body { max-width: none; padding: 0; font-size: 11pt; }
+            section { break-inside: avoid; }
+            .card { min-height: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Phiếu học tập Bài 9 · RAG và kiểm chứng nguồn</h1>
+    <p><b>Nhóm:</b> ____________________ &nbsp; <b>Lớp:</b> __________ &nbsp; <b>Ngày:</b> __________</p>
+    <p class="note"><b>Mục tiêu:</b> Dùng tài liệu để kiểm tra câu trả lời của AI, đồng thời nhận ra khi nguồn không đủ căn cứ. RAG có thể hỗ trợ truy xuất thông tin; không bảo đảm mọi câu trả lời đều đúng.</p>
+
+    <section class="fiction">
+        <h2>1. Tình huống khởi động · Ảo giác AI (9.1)</h2>
+        <p><b>Tình huống mô phỏng:</b> Trong một bài tập giả định, một luật sư hỏi chatbot về căn cứ cho một nhận định. Chatbot trả lời rất tự tin, đưa ra số hiệu một bản án và một câu trích dẫn. Khi nhóm kiểm tra trên nguồn chính thức theo hướng dẫn của giáo viên, không tìm thấy số hiệu và câu trích đó.</p>
+        <p><b>Lưu ý:</b> Tình huống và thông tin án lệ ở đây hoàn toàn hư cấu, không phải tư vấn pháp lý hay mô tả một vụ việc có thật.</p>
+        <ol>
+            <li>Rủi ro nếu người dùng tin câu trả lời mà không kiểm tra: ______________________________</li>
+            <li>Hai cách giảm sai lệch: 1) __________________________ 2) __________________________</li>
+            <li>Vì sao mô hình vẫn có thể trả lời trôi chảy khi thiếu dữ kiện? _________________________</li>
+        </ol>
+        <p><b>Liên hệ Ma Sói tự chế:</b> Nếu luật chơi của nhóm khác với những luật phổ biến mà AI từng gặp, AI có thể tự điền phần còn thiếu bằng quy tắc quen thuộc. Hãy nêu một dữ kiện cần đưa vào nguồn để tránh nhầm: ______________________________.</p>
+    </section>
+
+    <section>
+        <h2>2. Xếp thẻ quy trình RAG (9.2)</h2>
+        <p>Cắt hoặc đánh số thứ tự các thẻ dưới đây, sau đó vẽ mũi tên nối chúng.</p>
+        <div class="card"><b>Thẻ A</b><br>Mô hình tạo câu trả lời dựa trên yêu cầu và bối cảnh đã có.</div>
+        <div class="card"><b>Thẻ B</b><br>Hệ thống tìm đoạn liên quan trong tài liệu tham chiếu.</div>
+        <div class="card"><b>Thẻ C</b><br>Đưa thông tin truy xuất được vào prompt làm bối cảnh.</div>
+        <p><b>Thứ tự:</b> ______ → ______ → ______</p>
+        <p><b>Một giới hạn/rủi ro khi nguồn kém chất lượng:</b> __________________________________________</p>
+    </section>
+
+    <section>
+        <h2>3. Lập câu hỏi kiểm thử (9.3)</h2>
+        <p>Dùng nguồn “Quy chế thi đua giả định” do giáo viên cấp. Soạn hai câu có thể trả lời từ văn bản và một câu mà văn bản không nêu.</p>
+        <table>
+            <thead><tr><th>Loại</th><th>Câu hỏi của nhóm</th><th>Dự đoán khi chưa có nguồn / khi có nguồn</th></tr></thead>
+            <tbody>
+                <tr><td>Có trong nguồn 1</td><td></td><td></td></tr>
+                <tr><td>Có trong nguồn 2</td><td></td><td></td></tr>
+                <tr><td>Ngoài phạm vi nguồn</td><td></td><td></td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>4. Prompt ràng buộc nguồn (9.4)</h2>
+        <p>Sao chép prompt mẫu sau vào công cụ đọc tệp; thay tên tài liệu nếu cần.</p>
+        <div class="prompt">Chỉ trả lời dựa trên tài liệu đã tải lên. Với mỗi câu trả lời, hãy nêu mục/đoạn làm căn cứ. Nếu tài liệu không có đủ thông tin, hãy nói rõ “Tài liệu không nêu; chưa đủ căn cứ để kết luận”. Không tự bổ sung quy định hoặc suy đoán. Trích dẫn không thay thế việc người đọc kiểm tra lại văn bản gốc.</div>
+        <p><b>Ảnh/biên bản nạp nguồn và prompt:</b> _________________________________________________</p>
+    </section>
+
+    <section>
+        <h2>5. Bảng minh chứng MC9 · Kiểm thử trong/ngoài nguồn (9.5)</h2>
+        <p>Ghi ít nhất ba lượt hỏi. Với câu có trong nguồn, ghi đúng mục/đoạn; với câu ngoài nguồn, kiểm tra xem AI có biết từ chối kết luận hay không.</p>
+        <table>
+            <thead><tr><th>Câu hỏi</th><th>Trả lời AI</th><th>Mục/đoạn nguồn hoặc “không có”</th><th>Đối chiếu: đúng, sai hay chưa đủ căn cứ?</th></tr></thead>
+            <tbody>
+                <tr><td class="blank"></td><td></td><td></td><td></td></tr>
+                <tr><td class="blank"></td><td></td><td></td><td></td></tr>
+                <tr><td class="blank"></td><td></td><td></td><td></td></tr>
+            </tbody>
+        </table>
+        <p><b>Kiểm tra chéo:</b> Bạn học đã xác nhận trích dẫn có khớp văn bản gốc chưa? □ Có □ Cần sửa</p>
+        <p><b>Một giới hạn của câu trả lời/RAG mà nhóm nhận ra:</b> ___________________________________</p>
+    </section>
+
+    <section>
+        <h2>6. Báo cáo và nộp MC9 (9.6)</h2>
+        <ul>
+            <li>Đính kèm hai ảnh đối chiếu trước/sau nạp nguồn hoặc hai lượt thử tương ứng.</li>
+            <li>Viết 2–3 câu nhận xét vai trò của tài liệu và giới hạn của AI.</li>
+            <li>Trích ít nhất một mục/đoạn có thể kiểm tra trong nguồn gốc.</li>
+            <li>Nộp MC9 lên LMS; không kết luận RAG luôn đúng.</li>
+        </ul>
+        <p><b>Nhận xét 2–3 câu:</b></p>
+        <p>________________________________________________________________________________</p>
+        <p>________________________________________________________________________________</p>
+        <p>________________________________________________________________________________</p>
+    </section>
+    <p class="small">Học liệu mô phỏng dùng cho hoạt động lớp học. Không nhập dữ liệu cá nhân hoặc tài liệu nội bộ thật vào công cụ AI khi chưa được cho phép.</p>
+</body>
+</html>

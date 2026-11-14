@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bài 10 - Bộ thẻ playlist</title>
+    <style>
+        body { max-width: 900px; margin: 0 auto; padding: 24px; color: #202b38; font: 16px/1.5 Arial, sans-serif; }
+        h1, h2 { color: #8a4141; }
+        .task { padding: 12px; margin: 16px 0; background: #fff5f4; border-left: 5px solid #c96666; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .card { min-height: 90px; padding: 14px; border: 2px dashed #a86a6a; border-radius: 10px; break-inside: avoid; }
+        .label { font-weight: bold; color: #6a3030; }
+        @media print { body { max-width: none; padding: 0; font-size: 12pt; } .card { min-height: 80px; } }
+    </style>
+</head>
+<body>
+    <h1>Bài 10 · Bộ thẻ playlist để in và cắt</h1>
+    <p><b>Giáo viên:</b> In trang này, cắt từng thẻ. Phần A giữ nguyên nhãn trên thẻ; phần B không ghi nhãn cụm.</p>
+
+    <h2>Phần A · Phân lớp với hai nhãn đã cho</h2>
+    <p class="task"><b>Nhiệm vụ:</b> Đọc các thẻ ví dụ đã có nhãn, thống nhất dấu hiệu phân loại, rồi dự đoán nhãn cho hai thẻ cuối. Nhãn đã được xác định trước: <b>Sôi động</b> và <b>Thư giãn</b>.</p>
+    <div class="grid">
+        <div class="card"><span class="label">Ví dụ A · Nhãn: Sôi động</span><br>Tempo nhanh (126 BPM), năng lượng cao, nhạc điện tử.</div>
+        <div class="card"><span class="label">Ví dụ B · Nhãn: Thư giãn</span><br>Tempo chậm (72 BPM), năng lượng thấp, guitar mộc.</div>
+        <div class="card"><span class="label">Ví dụ C · Nhãn: Sôi động</span><br>Tempo nhanh (142 BPM), năng lượng cao, nhạc rock.</div>
+        <div class="card"><span class="label">Ví dụ D · Nhãn: Thư giãn</span><br>Tempo chậm (80 BPM), năng lượng thấp, piano.</div>
+        <div class="card"><span class="label">Thẻ cần dự đoán E · Nhãn: __________</span><br>Tempo nhanh (132 BPM), năng lượng cao, nhạc dance điện tử.</div>
+        <div class="card"><span class="label">Thẻ cần dự đoán F · Nhãn: __________</span><br>Tempo chậm (70 BPM), năng lượng thấp, guitar mộc.</div>
+    </div>
+
+    <h2>Phần B · Phân cụm theo điểm tương đồng</h2>
+    <p class="task"><b>Nhiệm vụ:</b> Các thẻ dưới đây chưa có nhãn. Nhóm tự thống nhất tiêu chí tương đồng (ví dụ nhịp độ, nhạc cụ, năng lượng hoặc mục đích nghe), chia thẻ thành cụm và giải thích lựa chọn. Có thể có nhiều cách chia hợp lý nếu nêu rõ tiêu chí.</p>
+    <div class="grid">
+        <div class="card"><span class="label">Thẻ G · Chưa gắn nhãn</span><br>72 BPM; piano; không lời; nhẹ nhàng; thường nghe khi học.</div>
+        <div class="card"><span class="label">Thẻ H · Chưa gắn nhãn</span><br>68 BPM; piano; không lời; êm; thường nghe khi tập trung.</div>
+        <div class="card"><span class="label">Thẻ I · Chưa gắn nhãn</span><br>126 BPM; nhạc điện tử; tiết tấu mạnh; thường nghe khi tập thể thao.</div>
+        <div class="card"><span class="label">Thẻ J · Chưa gắn nhãn</span><br>132 BPM; nhạc dance; tiết tấu nhanh; năng lượng cao.</div>
+        <div class="card"><span class="label">Thẻ K · Chưa gắn nhãn</span><br>96 BPM; guitar acoustic; nhẹ nhàng; lời về thiên nhiên.</div>
+        <div class="card"><span class="label">Thẻ L · Chưa gắn nhãn</span><br>101 BPM; guitar mộc; nhịp vừa; thường nghe khi đi dã ngoại.</div>
+    </div>
+    <p><b>Tiêu chí nhóm chọn:</b> ______________________________________________________________</p>
+    <p><b>Cụm 1:</b> ____________________ &nbsp; <b>Cụm 2:</b> ____________________ &nbsp; <b>Cụm 3:</b> ____________________</p>
+    <p><b>Giải thích vì sao các thẻ trong từng cụm giống nhau:</b> ____________________________________</p>
+    <p><b>Câu hỏi phản biện:</b> Ai đặt tên nhãn trước ở phần A? Ở phần B, ai chọn tiêu chí và số cụm?</p>
+</body>
+</html>

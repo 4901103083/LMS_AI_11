@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bài 12 - Hướng dẫn giáo viên và rubric mẫu</title>
+    <style>
+        body { max-width: 900px; margin: 0 auto; padding: 24px; color: #25323a; font: 16px/1.6 Arial, sans-serif; }
+        h1, h2 { color: #456b55; }
+        section { margin: 20px 0; padding: 16px; border: 1px solid #c8d8ca; border-radius: 10px; }
+        .note { background: #f1f8f1; border-left: 5px solid #688e6d; padding: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #78877b; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #edf5ed; }
+        @media print { body { max-width: none; padding: 0; } section { break-inside: avoid; } }
+    </style>
+</head>
+<body>
+    <h1>Bài 12 · Hướng dẫn giáo viên và rubric mẫu</h1>
+    <p class="note"><b>Hướng dẫn giáo viên.</b> Tổ chức 45 phút thực hành trực tiếp; video demo, tự/đồng đánh giá hoàn thành không đồng bộ sau tiết để không lấn giờ học.</p>
+
+    <section>
+        <h2>Tiến trình 45 phút</h2>
+        <table>
+            <thead><tr><th>Hoạt động</th><th>Thời lượng</th><th>Điểm cần kiểm tra</th></tr></thead>
+            <tbody>
+                <tr><td>12.1 · Huấn luyện lần đầu</td><td>12 phút</td><td>Chọn loại dự án theo Canvas; 2–4 nhãn; ghi mẫu train và giữ riêng 5–10 mẫu/nhãn làm test; lưu cấu hình gốc.</td></tr>
+                <tr><td>12.2 · Kiểm thử dữ liệu mới</td><td>10 phút</td><td>Ghi đúng/tổng theo từng nhãn trên mẫu độc lập; không dùng ảnh train để chấm test.</td></tr>
+                <tr><td>12.3 · Tối ưu theo vòng lặp</td><td>18 phút</td><td>Giữ cùng bộ test; mỗi lượt chỉ đổi một yếu tố; ưu tiên dữ liệu trước tham số; ghi ít nhất hai thay đổi có lý do.</td></tr>
+                <tr><td>12.4 · Nghiệm thu và giao nộp</td><td>5 phút</td><td>Demo nhanh dữ liệu mới; chốt link/tệp; giao video 60–90 giây, nhật ký và rubric sau giờ.</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Hỗ trợ và phương án dự phòng</h2>
+        <ul>
+            <li>Kiểm tra trước quyền truy cập Teachable Machine, thiết bị và bộ dữ liệu đã chia theo nhãn.</li>
+            <li>Giám sát quyền riêng tư, kích thước tệp và việc tách test khỏi train; không yêu cầu tải dữ liệu cá nhân lên công cụ.</li>
+            <li>Nếu công cụ lỗi, dùng mô hình mẫu/phiếu huấn luyện để luyện phân tích; yêu cầu nhóm ghi rõ “mô phỏng/dự phòng”, không trình bày như đã huấn luyện thật.</li>
+            <li>Nếu lượt huấn luyện thứ hai không kịp trong 18 phút, giao hoàn tất có minh chứng trên LMS theo thời hạn đã công bố.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Ví dụ ghi đúng cách (số liệu chỉ để minh họa)</h2>
+        <p>Giả sử nhóm có nhãn “giấy” và “chai nhựa”, dùng cùng 10 mẫu test độc lập mỗi nhãn:</p>
+        <table>
+            <thead><tr><th>Lượt</th><th>Thay đổi duy nhất</th><th>Giấy</th><th>Chai nhựa</th><th>Nhận xét</th></tr></thead>
+            <tbody>
+                <tr><td>Gốc</td><td>Không</td><td>7/10</td><td>6/10</td><td>Nhóm ghi lỗi do nền phản sáng.</td></tr>
+                <tr><td>1</td><td>Thêm mẫu chai ở nền khác</td><td>7/10</td><td>8/10</td><td>Cải thiện ở nhãn chai; giấy không đổi.</td></tr>
+                <tr><td>2</td><td>Cân bằng thêm mẫu giấy (chỉ đổi yếu tố này)</td><td>8/10</td><td>8/10</td><td>Ghi trung thực kết quả; không suy ra hiệu quả ngoài bộ test nhỏ.</td></tr>
+            </tbody>
+        </table>
+        <p>Số liệu trên chỉ minh họa cách ghi, không phải kết quả mong đợi hay dữ liệu thực của học sinh. Nếu kết quả giảm/không đổi, vẫn ghi đúng và cùng phân tích.</p>
+    </section>
+
+    <section>
+        <h2>Rubric mẫu MC11 + MC12 (0–2 điểm mỗi tiêu chí)</h2>
+        <table>
+            <thead><tr><th>Tiêu chí</th><th>0 điểm</th><th>1 điểm</th><th>2 điểm</th></tr></thead>
+            <tbody>
+                <tr><td>Thiết kế và dữ liệu (MC11)</td><td>Thiếu Canvas/nhãn không rõ</td><td>Có Canvas nhưng liên kết dữ liệu–đầu ra còn thiếu</td><td>8 ô đủ; 2–4 nhãn, dữ liệu và bối cảnh khớp</td></tr>
+                <tr><td>Kiểm thử độc lập</td><td>Dùng lại dữ liệu train hoặc không ghi kết quả</td><td>Có test nhưng ghi chưa đủ theo nhãn</td><td>Test riêng, ghi đúng/tổng và lỗi cụ thể</td></tr>
+                <tr><td>Nhật ký tối ưu</td><td>Không có lượt thay đổi</td><td>Có thay đổi nhưng chưa tách yếu tố/bộ test</td><td>Có gốc + ít nhất 2 thay đổi từng yếu tố, dùng cùng test</td></tr>
+                <tr><td>Demo, giải thích và an toàn</td><td>Thiếu minh chứng hoặc không lưu ý rủi ro</td><td>Có demo/giải thích nhưng còn thiếu một phần</td><td>Demo dữ liệu mới, nêu lỗi/điều chỉnh, bảo vệ dữ liệu và có người kiểm soát</td></tr>
+            </tbody>
+        </table>
+        <p>Tổng điểm gợi ý: ____ / 8. Giáo viên có thể điều chỉnh rubric theo tiêu chí khóa học và công bố trước hạn nộp.</p>
+    </section>
+</body>
+</html>

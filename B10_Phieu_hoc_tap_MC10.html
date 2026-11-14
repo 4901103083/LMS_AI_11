@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bài 10 - Phiếu học tập và MC10</title>
+    <style>
+        body { max-width: 900px; margin: 0 auto; padding: 24px; color: #202b38; font: 16px/1.6 Arial, sans-serif; }
+        h1, h2 { color: #8a4141; }
+        h1 { border-bottom: 3px solid #e8a4a4; padding-bottom: 10px; }
+        section { margin: 22px 0; padding: 16px; border: 1px solid #dccaca; border-radius: 10px; }
+        .note { background: #fff5f4; border-left: 5px solid #c96666; padding: 12px 16px; }
+        table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+        th, td { border: 1px solid #817777; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #faeeee; }
+        td.blank { height: 48px; }
+        .diagram { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0; }
+        .layer { width: 28%; min-height: 85px; border: 2px dashed #bb7777; border-radius: 10px; text-align: center; padding: 12px; }
+        .arrow { font-size: 24px; }
+        @media print { body { max-width: none; padding: 0; font-size: 11pt; } section { break-inside: avoid; } }
+    </style>
+</head>
+<body>
+    <h1>Phiếu học tập Bài 10 · Mạng nơ-ron và thuật toán</h1>
+    <p><b>Nhóm:</b> ____________________ &nbsp; <b>Lớp:</b> __________ &nbsp; <b>Ngày:</b> __________</p>
+    <p class="note"><b>MC10:</b> Nộp ảnh ít nhất hai cấu hình mô phỏng cùng phiếu ghi thông số, kết quả quan sát và lý do chọn cấu hình. Chỉ đổi một yếu tố giữa hai lần so sánh.</p>
+
+    <section>
+        <h2>1. Nhận diện ba phần của mạng nơ-ron (10.1)</h2>
+        <div class="diagram">
+            <div class="layer"><b>Phần 1:</b><br>____________________<br>Dữ liệu/đặc trưng đi vào</div>
+            <div class="arrow">→</div>
+            <div class="layer"><b>Phần 2:</b><br>____________________<br>Mạng xử lý đặc trưng</div>
+            <div class="arrow">→</div>
+            <div class="layer"><b>Phần 3:</b><br>____________________<br>Kết quả dự đoán</div>
+        </div>
+        <p>Viết tên tiếng Anh tương ứng: __________________ / __________________ / __________________</p>
+        <p><b>Playlist có nhãn sẵn:</b> mỗi bài hát đã được gắn nhãn “Sôi động” hoặc “Thư giãn”.</p>
+        <p><b>100 bài hát chưa có nhãn:</b> chưa có nhóm định trước; người học có thể tự chọn tiêu chí giống nhau để gom nhóm.</p>
+        <p>Trường hợp thứ nhất gần với __________________; trường hợp thứ hai gần với __________________.</p>
+        <p>Khác biệt chính: ___________________________________________________________________</p>
+    </section>
+
+    <section>
+        <h2>2. Phiếu thực hành thẻ (10.2)</h2>
+        <p><b>Phân lớp:</b> dùng hai nhãn cho trước trên bộ thẻ phân loại; ghi tiêu chí giúp bạn chọn nhãn.</p>
+        <p>Tiêu chí nhận nhãn “Sôi động”: ________________________ &nbsp; “Thư giãn”: ________________________</p>
+        <p><b>Phân cụm:</b> tự chọn một tiêu chí tương đồng cho bộ thẻ chưa gắn nhãn, vẽ các nhóm và giải thích vì sao các thẻ giống nhau.</p>
+        <p>Tiêu chí gom cụm: __________________________________________________________________</p>
+        <p>Sơ đồ nhóm thẻ / tên hoặc mã thẻ: _____________________________________________________</p>
+        <p><b>So sánh:</b> Ai/điều gì cung cấp nhãn trong bài phân lớp? Nhóm dựa vào đâu để tạo cụm?</p>
+        <p>________________________________________________________________________________</p>
+    </section>
+
+    <section>
+        <h2>3. Làm quen TensorFlow Playground (10.3)</h2>
+        <p>Mở <a href="https://playground.tensorflow.org" target="_blank" rel="noopener">playground.tensorflow.org</a> theo hướng dẫn của giáo viên.</p>
+        <table>
+            <thead><tr><th>Thành phần cần tìm</th><th>Đã tìm/chỉ được?</th><th>Ghi chú</th></tr></thead>
+            <tbody>
+                <tr><td>Bộ dữ liệu được chỉ định</td><td>□ Có □ Chưa</td><td></td></tr>
+                <tr><td>Lớp ẩn và số nơ-ron</td><td>□ Có □ Chưa</td><td></td></tr>
+                <tr><td>Nút Play/Reset</td><td>□ Có □ Chưa</td><td></td></tr>
+                <tr><td>Ranh giới phân loại và chỉ số lỗi hiển thị</td><td>□ Có □ Chưa</td><td></td></tr>
+            </tbody>
+        </table>
+        <p>Nếu không có Internet, dùng ảnh giao diện/chú giải hoặc phiếu mô phỏng do giáo viên cấp; ghi rõ đây là phương án dự phòng.</p>
+    </section>
+
+    <section>
+        <h2>4. Nhật ký hai cấu hình MC10 (10.4)</h2>
+        <p>Dùng cùng bộ dữ liệu và điều kiện khởi đầu. Ghi rõ một yếu tố duy nhất được thay đổi giữa A và B.</p>
+        <table>
+            <thead><tr><th>Thông tin</th><th>Cấu hình A</th><th>Cấu hình B</th></tr></thead>
+            <tbody>
+                <tr><td>Bộ dữ liệu / điều kiện khởi đầu</td><td></td><td></td></tr>
+                <tr><td>Số lớp ẩn</td><td></td><td></td></tr>
+                <tr><td>Số nơ-ron từng lớp (nếu có)</td><td></td><td></td></tr>
+                <tr><td>Yếu tố thay đổi duy nhất</td><td>—</td><td></td></tr>
+                <tr><td>Ranh giới phân loại quan sát được</td><td class="blank"></td><td></td></tr>
+                <tr><td>Độ lỗi / chỉ số hiển thị sau cùng</td><td></td><td></td></tr>
+                <tr><td>Ảnh chụp / tên tệp minh chứng</td><td></td><td></td></tr>
+            </tbody>
+        </table>
+        <p><b>Nhận xét dựa trên quan sát:</b> _______________________________________________________</p>
+        <p>________________________________________________________________________________</p>
+    </section>
+
+    <section>
+        <h2>5. Lý giải và nộp sản phẩm (10.5)</h2>
+        <ol>
+            <li>Nhóm chọn cấu hình nào cho bộ dữ liệu đã thử? ______________________________________</li>
+            <li>Bằng chứng từ ranh giới phân loại/độ lỗi/tốc độ quan sát là gì? __________________________</li>
+        </ol>
+        <p>Viết ít nhất hai câu giải thích; không kết luận rằng cấu hình nhiều lớp hơn luôn tốt hơn.</p>
+        <p>________________________________________________________________________________</p>
+        <p>________________________________________________________________________________</p>
+        <p><b>Checklist MC10:</b> □ Hai ảnh/cấu hình □ Thông số □ Kết quả quan sát □ Ít nhất 2 câu lý giải</p>
+    </section>
+</body>
+</html>

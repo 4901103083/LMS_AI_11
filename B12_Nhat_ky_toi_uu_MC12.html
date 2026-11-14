@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bài 12 - Nhật ký kiểm thử và tối ưu MC12</title>
+    <style>
+        body { max-width: 940px; margin: 0 auto; padding: 24px; color: #25323a; font: 16px/1.6 Arial, sans-serif; }
+        h1, h2 { color: #456b55; }
+        section { margin: 20px 0; padding: 16px; border: 1px solid #c8d8ca; border-radius: 10px; }
+        .note { background: #f1f8f1; border-left: 5px solid #688e6d; padding: 12px; }
+        table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+        th, td { border: 1px solid #78877b; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #edf5ed; }
+        td.blank { height: 44px; }
+        .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .step { padding: 10px; border: 1px dashed #69866e; border-radius: 8px; text-align: center; }
+        @media print { body { max-width: none; padding: 0; font-size: 11pt; } section { break-inside: avoid; } }
+    </style>
+</head>
+<body>
+    <h1>Bài 12 · Nhật ký kiểm thử và tối ưu MC12</h1>
+    <p><b>Nhóm:</b> ____________________ &nbsp; <b>Lớp:</b> ______ &nbsp; <b>Dự án/Canvas MC11:</b> ________________________</p>
+    <p class="note"><b>Quy tắc:</b> Tách mẫu kiểm thử khỏi dữ liệu huấn luyện; dùng cùng bộ test ở các lượt; mỗi lần chỉ thay đổi một yếu tố. Ghi đúng kết quả quan sát, kể cả khi kết quả không cải thiện.</p>
+
+    <section>
+        <h2>1. Luồng vận hành và hai giai đoạn</h2>
+        <div class="flow">
+            <div class="step">1<br>Thu nhận</div>
+            <div class="step">2<br>Xử lý</div>
+            <div class="step">3<br>Dự đoán</div>
+            <div class="step">4<br>Ra quyết định</div>
+            <div class="step">5<br>Phản hồi</div>
+        </div>
+        <p><b>Huấn luyện:</b> ___________________________________________________________________</p>
+        <p><b>Vận hành/kiểm thử:</b> ______________________________________________________________</p>
+        <p>Khi mô hình dự đoán sai, ai xác nhận và nhóm sẽ phản hồi thế nào? __________________________</p>
+    </section>
+
+    <section>
+        <h2>2. Cấu hình gốc và bộ kiểm thử độc lập (12.1–12.2)</h2>
+        <p>Loại dự án/công cụ: __________________________ &nbsp; Dataset/phiên bản: __________________________</p>
+        <p>Số nhãn (2–4): ________ &nbsp; Thiết lập ban đầu (mặc định): ______________________________</p>
+        <table>
+            <thead><tr><th>Nhãn</th><th>Số mẫu huấn luyện</th><th>Số mẫu test riêng (5–10)</th><th>Số đúng / tổng ở lượt gốc</th><th>Lỗi/bối cảnh quan sát</th></tr></thead>
+            <tbody>
+                <tr><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+        </table>
+        <p><b>Lượt test gốc:</b> ghi đúng/tổng theo từng nhãn trên mẫu chưa dùng để huấn luyện. Không đưa ảnh test vào lại tập train.</p>
+        <p>□ Mô hình mẫu đã huấn luyện &nbsp; □ Có bộ test riêng &nbsp; □ Ghi rõ phương án dự phòng nếu công cụ lỗi</p>
+    </section>
+
+    <section>
+        <h2>3. Nhật ký vòng lặp tối ưu (12.3)</h2>
+        <p>Giữ nguyên bộ test độc lập. Ưu tiên sửa dữ liệu (mẫu dễ nhầm, cân bằng nhãn, đa dạng nền); chỉ cân nhắc epochs khi có lý do.</p>
+        <table>
+            <thead><tr><th>Lượt</th><th>Chỉ một yếu tố được đổi</th><th>Lý do</th><th>Kết quả test đúng/tổng theo nhãn</th><th>Tăng/giảm/không đổi và quan sát</th></tr></thead>
+            <tbody>
+                <tr><td>Gốc</td><td>Không đổi</td><td>Cấu hình mặc định</td><td class="blank"></td><td></td></tr>
+                <tr><td>Thay đổi 1</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>Thay đổi 2</td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+        </table>
+        <p><b>Ảnh/biên bản mô hình gốc:</b> ______________________________________________________</p>
+        <p><b>Ảnh/biên bản sau thay đổi 1:</b> ___________________________________________________</p>
+        <p><b>Ảnh/biên bản sau thay đổi 2:</b> ___________________________________________________</p>
+        <p>Nếu không đủ thời gian huấn luyện lượt 2, ghi kế hoạch hoàn tất và nộp minh chứng trên LMS sau tiết; không tự điền kết quả chưa chạy.</p>
+    </section>
+
+    <section>
+        <h2>4. Nghiệm thu và hồ sơ cuối khóa (12.4)</h2>
+        <ul>
+            <li>Trình diễn nhanh bằng một dữ liệu mới; lưu link mô hình nếu công cụ cho phép hoặc ảnh/video bằng chứng.</li>
+            <li>Nộp Canvas MC11 đã chỉnh và nhật ký MC12; quay video demo 60–90 giây sau tiết.</li>
+            <li>Video nêu ít nhất một lỗi/giới hạn và một điều chỉnh; tự đánh giá/đánh giá chéo theo rubric giáo viên cấp.</li>
+        </ul>
+        <p><b>Lỗi hoặc rủi ro nhóm nhận ra:</b> _____________________________________________________</p>
+        <p><b>Điều chỉnh và kết quả thật ghi nhận:</b> _______________________________________________</p>
+        <p><b>Link/tên tệp nộp LMS:</b> ___________________________________________________________</p>
+        <p><b>An toàn:</b> Không dùng ảnh có khuôn mặt/thông tin cá nhân nếu chưa được phép; dữ liệu mẫu dự phòng phải ghi rõ là mô phỏng.</p>
+    </section>
+</body>
+</html>

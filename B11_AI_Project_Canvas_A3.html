@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bài 11 - AI Project Canvas 8 ô</title>
+    <style>
+        body { max-width: 1200px; margin: 0 auto; padding: 24px; color: #203239; font: 15px/1.45 Arial, sans-serif; }
+        h1 { margin: 0 0 8px; color: #176f70; text-align: center; }
+        .meta { text-align: center; margin: 0 0 16px; }
+        .canvas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .box { min-height: 220px; padding: 12px; border: 2px solid #53a9a2; border-radius: 8px; break-inside: avoid; }
+        .box h2 { margin: 0 0 8px; color: #176f70; font-size: 16px; }
+        .hint { color: #506463; font-size: 13px; }
+        .write { margin-top: 12px; border-bottom: 1px solid #aebebe; min-height: 26px; }
+        .footer { margin-top: 14px; padding: 10px; background: #edf8f7; }
+        @page { size: A3 landscape; margin: 10mm; }
+        @media print {
+            body { max-width: none; padding: 0; font-size: 10.5pt; }
+            .box { min-height: 78mm; }
+        }
+    </style>
+</head>
+<body>
+    <h1>AI PROJECT CANVAS · THIẾT KẾ DỰ ÁN AI HỌC ĐƯỜNG</h1>
+    <p class="meta"><b>Nhóm:</b> __________________ &nbsp; <b>Lớp:</b> ______ &nbsp; <b>Tên dự án:</b> __________________________________________</p>
+    <div class="canvas">
+        <section class="box">
+            <h2>1. Vấn đề và mục tiêu</h2>
+            <div class="hint">Vấn đề cụ thể cần giải quyết là gì? AI hỗ trợ việc nào, không thay thế việc nào?</div>
+            <div class="write"></div><div class="write"></div><div class="write"></div>
+        </section>
+        <section class="box">
+            <h2>2. Người dùng và bối cảnh</h2>
+            <div class="hint">Ai dùng kết quả? Dùng ở đâu, khi nào, trong điều kiện ánh sáng/âm thanh/nền nào?</div>
+            <div class="write"></div><div class="write"></div><div class="write"></div>
+        </section>
+        <section class="box">
+            <h2>3. Đầu vào</h2>
+            <div class="hint">Mô hình nhận loại dữ liệu nào (ảnh/âm thanh/văn bản)? Nêu đặc trưng cần có.</div>
+            <div class="write"></div><div class="write"></div><div class="write"></div>
+        </section>
+        <section class="box">
+            <h2>4. Đầu ra</h2>
+            <div class="hint">Chọn 2–4 nhãn rõ ràng. Mỗi nhãn ứng với kết quả nào? Nếu không chắc, cần làm gì?</div>
+            <div class="write"></div><div class="write"></div><div class="write"></div>
+        </section>
+        <section class="box">
+            <h2>5. Dữ liệu huấn luyện</h2>
+            <div class="hint">Nguồn được phép dùng? Mỗi nhãn có bao nhiêu mẫu? Có đại diện đúng bối cảnh triển khai và giữ riêng mẫu kiểm thử không?</div>
+            <div class="write"></div><div class="write"></div><div class="write"></div>
+        </section>
+        <section class="box">
+            <h2>6. Mô hình và công cụ</h2>
+            <div class="hint">Chọn công cụ no-code phù hợp với đầu vào/đầu ra. Ai sẽ vận hành và kiểm tra kết quả?</div>
+            <div class="write"></div><div class="write"></div><div class="write"></div>
+        </section>
+        <section class="box">
+            <h2>7. Tiêu chí thành công</h2>
+            <div class="hint">Đo thế nào trên mẫu chưa dùng huấn luyện? Ghi dạng đúng/tổng hoặc ngưỡng nhóm đề xuất.</div>
+            <div class="write"></div><div class="write"></div><div class="write"></div>
+        </section>
+        <section class="box">
+            <h2>8. Rủi ro và vai trò con người</h2>
+            <div class="hint">Dữ liệu lệch/thiếu, riêng tư, dự đoán sai: ai phát hiện, ai quyết định và có bước xác nhận nào?</div>
+            <div class="write"></div><div class="write"></div><div class="write"></div>
+        </section>
+    </div>
+    <p class="footer"><b>Kiểm tra trước khi trình bày:</b> Đầu ra có khớp dữ liệu? Tiêu chí đo được? Nguồn dữ liệu an toàn? Có người chịu trách nhiệm kiểm soát? Chuẩn bị 2–4 nhãn và kế hoạch thu thập mẫu cho Bài 12.</p>
+</body>
+</html>

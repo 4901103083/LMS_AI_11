@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bài 9 - Hướng dẫn giáo viên và đáp án mẫu</title>
+    <style>
+        body { max-width: 900px; margin: 0 auto; padding: 24px; color: #202b38; font: 16px/1.6 Arial, sans-serif; }
+        h1, h2 { color: #245c43; }
+        section { margin: 20px 0; padding: 16px; border: 1px solid #cbd8ce; border-radius: 10px; }
+        .warning { background: #fff4e7; border-left: 5px solid #bb6b30; padding: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #78877b; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #edf5ed; }
+        @media print { body { max-width: none; padding: 0; } section { break-inside: avoid; } }
+    </style>
+</head>
+<body>
+    <h1>Bài 9 · Hướng dẫn giáo viên và đáp án gợi ý</h1>
+    <p class="warning"><b>Chỉ dùng cho giáo viên.</b> Tình huống án lệ và “Quy chế thi đua” là tài liệu mô phỏng, không đại diện cho văn bản hay vụ việc có thật. Không phát đáp án này cùng phiếu học sinh.</p>
+
+    <section>
+        <h2>Chuẩn bị trước giờ học</h2>
+        <ul>
+            <li>Tiết 1: đăng case mô phỏng luật sư/án lệ AI trên LMS; chuẩn bị sơ đồ RAG, thẻ xếp thứ tự, bản “Quy chế thi đua” để so sánh.</li>
+            <li>Tiết 2: mở trang <code>B9_Quy_che_thi_dua_mau.html</code>, chọn In → Lưu thành PDF; kiểm tra PDF có đủ các mục §1–§4 rồi cấp cho học sinh.</li>
+            <li>Chuẩn bị một công cụ đọc tệp có sẵn tại lớp. Không yêu cầu học sinh tạo tài khoản mới nếu chưa được phép.</li>
+            <li>Phương án dự phòng: dùng transcript của nguồn, phiếu MC9 và ảnh chụp câu trả lời mẫu; ghi rõ đây là mô phỏng khi công cụ không dùng được.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Đáp án/thảo luận gợi ý</h2>
+        <ul>
+            <li><b>9.1:</b> Rủi ro gồm trích dẫn không tồn tại, quyết định dựa trên căn cứ sai, lan truyền thông tin sai. Cách giảm: kiểm tra nguồn gốc độc lập; yêu cầu trích dẫn/giới hạn và không dùng câu trả lời AI thay cho xác minh chuyên môn.</li>
+            <li><b>9.2:</b> Thứ tự thẻ: truy xuất nguồn → bổ sung bối cảnh vào prompt → tạo câu trả lời. Nguồn sai, cũ, thiếu hoặc truy xuất nhầm vẫn dẫn đến câu trả lời sai.</li>
+            <li><b>Ma Sói tự chế:</b> Khi luật nhóm không có trong dữ liệu hoặc nguồn đưa vào, AI có thể nhầm luật phổ biến với luật do nhóm đặt.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Câu hỏi thử với nguồn mẫu và căn cứ</h2>
+        <table>
+            <thead><tr><th>Câu hỏi</th><th>Đáp án có thể kiểm chứng</th><th>Căn cứ</th></tr></thead>
+            <tbody>
+                <tr><td>Lớp được tối đa bao nhiêu điểm cho phần tham gia hoạt động?</td><td>30 điểm.</td><td>§2, “Tham gia hoạt động”.</td></tr>
+                <tr><td>Hạn nộp sản phẩm nhóm là khi nào và cần ghi gì?</td><td>Trước 17:00 thứ Sáu trên LMS; ghi tên nhóm.</td><td>§2, “Sản phẩm học tập theo nhóm”.</td></tr>
+                <tr><td>Vệ sinh/phân loại rác được ghi nhận khi nào và bởi ai?</td><td>Giáo viên và lớp trưởng dùng bảng kiểm vào thứ Sáu.</td><td>§2, “Vệ sinh và phân loại rác”.</td></tr>
+                <tr><td>Nộp trễ 2 phút do mất mạng có được chấp nhận không?</td><td>Tài liệu không nêu; không đủ căn cứ để kết luận.</td><td>Không có quy định trong nguồn. §4 chỉ nêu hạn gửi đề nghị rà soát điểm.</td></tr>
+                <tr><td>Lớp đạt 90 điểm có chắc chắn được ghi nhận không?</td><td>Chưa đủ dữ kiện nếu chưa biết có biên bản vi phạm an toàn nghiêm trọng hay không; đồng thời văn bản nói “được đề nghị ghi nhận”.</td><td>§3.</td></tr>
+            </tbody>
+        </table>
+        <p><b>Mẫu phản hồi khi thiếu dữ kiện:</b> “Tài liệu không nêu quy định về trường hợp nộp trễ do sự cố mạng, nên chưa đủ căn cứ để kết luận.”</p>
+    </section>
+
+    <section>
+        <h2>Đối chiếu trước và sau khi nạp tài liệu</h2>
+        <p>Có thể dùng câu hỏi “Hạn nộp sản phẩm nhóm là khi nào?” để chạy thử. Trước khi nạp nguồn, một câu trả lời bịa như “15:00 thứ Năm” chỉ là <b>đầu ra minh họa giả định</b>, không phải kết quả bắt buộc của mọi công cụ. Sau khi nạp nguồn, học sinh phải tự kiểm tra câu trả lời “trước 17:00 thứ Sáu” tại §2.</p>
+        <p>Không chấm theo việc AI trả lời giống hệt mẫu. Chấm việc học sinh kiểm tra được trích dẫn, nhận ra câu ngoài nguồn và ghi nhận đúng cả khi kết quả không thay đổi.</p>
+    </section>
+
+    <section>
+        <h2>Kiểm tra MC9 nhanh</h2>
+        <ul>
+            <li>Có ít nhất 2 câu hỏi trong nguồn và 1 câu ngoài nguồn.</li>
+            <li>Trích đúng mục/đoạn; câu không có căn cứ được đánh dấu “tài liệu không nêu”.</li>
+            <li>Có ảnh/biên bản trước–sau hoặc phương án transcript dự phòng.</li>
+            <li>Nhận xét không khẳng định RAG loại bỏ hoàn toàn ảo giác.</li>
+        </ul>
+    </section>
+</body>
+</html>

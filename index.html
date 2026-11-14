@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trạm Không Gian AI - Lớp 11</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --primary: #FFB7B2; 
+            --secondary: #E2F0CB; 
+            --accent: #87CEEB; 
+            --yellow: #FFE4B5; 
+            --text-main: #4a4a4a;
+            --card-bg: #ffffff;
+            --border-radius: 25px;
+            --border-style: 3px solid #333;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#87CEEB 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-main);
+            margin: 0;
+            height: 100vh;
+            overflow: hidden; /* Chống cuộn toàn trang */
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Baloo 2', cursive;
+            color: #333;
+            margin-top: 0;
+        }
+
+        /* ========================================= */
+        /* CSS MÀN HÌNH ĐĂNG NHẬP (LOGIN SCREEN)     */
+        /* ========================================= */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center; z-index: 10000;
+            box-sizing: border-box; overflow-y: auto; padding: 20px 0;
+        }
+        .login-card {
+            background: #fff; padding: 40px; border-radius: 25px; border: 4px solid var(--accent);
+            box-shadow: 10px 10px 0px var(--primary); text-align: center; width: 90%; max-width: 400px;
+            animation: fadeIn 0.5s ease; margin: auto;
+        }
+        .login-card h1 { font-size: 36px; margin-bottom: 5px; color: #ff5e5e; }
+        .role-toggle { display: flex; gap: 15px; margin: 25px 0; }
+        .role-btn { 
+            flex: 1; padding: 12px; border: 2px solid #ccc; background: #f8fbff; 
+            border-radius: 15px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s;
+            font-family: 'Nunito', sans-serif;
+        }
+        .role-btn:hover { background: #e6f2ff; border-color: var(--accent); }
+        .role-btn.active { border-color: var(--accent); background: var(--accent); color: #333; box-shadow: 4px 4px 0px #333; }
+        .login-input {
+            width: 85%; padding: 15px; border-radius: 15px; border: 2px solid #ccc;
+            font-size: 16px; margin-bottom: 20px; text-align: center; font-family: 'Nunito', sans-serif;
+        }
+        .btn-login {
+            background-color: var(--yellow); color: #333; border: 3px solid #333; border-radius: 15px;
+            padding: 15px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%;
+            box-shadow: 4px 4px 0px #333; transition: all 0.2s ease;
+        }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 6px 6px 0px #333; }
+
+        /* ========================================= */
+        /* CSS GIAO DIỆN CHÍNH CỦA APP               */
+        /* ========================================= */
+        #main-app {
+            display: none; /* Ẩn đi khi chưa đăng nhập */
+            width: 100%; height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px; background-color: var(--secondary); border-right: var(--border-style);
+            padding: 20px; display: flex; flex-direction: column; box-shadow: 5px 0 15px rgba(0,0,0,0.05); z-index: 10;
+        }
+        .logo { font-size: 26px; font-weight: 800; text-align: center; margin-bottom: 30px; background: #fff; padding: 10px; border: var(--border-style); border-radius: var(--border-radius); box-shadow: 4px 4px 0px #333; }
+        .nav-btn {
+            background-color: var(--card-bg); border: var(--border-style); border-radius: 15px; padding: 12px 15px; margin-bottom: 15px; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; box-shadow: 3px 3px 0px #333; text-align: left;
+        }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 5px 5px 0px #333; }
+        .nav-btn.active { background-color: var(--primary); color: #fff; border-color: #333; }
+        .nav-btn.home-btn { background-color: var(--yellow); color: #333; }
+        .nav-btn.home-btn.active { background-color: #ffcc00; }
+
+        .main-content { flex: 1; padding: 30px 40px; overflow-y: auto; }
+        .lesson-section { display: none; animation: fadeIn 0.5s ease; }
+        .lesson-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* HÌNH ẢNH & THÀNH PHẦN */
+        .cartoon-img { max-width: 100%; height: auto; border: var(--border-style); border-radius: 15px; box-shadow: 5px 5px 0px #333; display: block; transition: transform 0.3s; object-fit: cover; }
+        .cartoon-img:hover { transform: scale(1.02) rotate(-1deg); }
+
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; border: 3px solid #ffcc00; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); margin-top: 15px; background-color: #000; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .interactive-video-wrapper { position: relative; width: 100%; border-radius: 15px; border: 3px solid var(--accent); box-shadow: 4px 4px 0px rgba(0,0,0,0.1); margin-top: 15px; overflow: hidden; background: #000; }
+        .interactive-video-wrapper iframe { width: 100%; aspect-ratio: 16 / 9; display: block; border: 0; }
+        
+        .question-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 10; text-align: center; }
+        .question-box { background: #fff; padding: 20px 30px; border-radius: 20px; border: var(--border-style); box-shadow: 5px 5px 0px var(--primary); max-width: 80%; }
+        .question-box h3 { margin-bottom: 15px; font-size: 20px; color: #333; }
+        .ans-btn { display: block; width: 100%; margin: 10px 0; padding: 10px; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: bold; background: var(--bg-color); border: 2px solid #ccc; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+        .ans-btn:hover { background: var(--yellow); border-color: #333; transform: scale(1.02); }
+
+        /* BỐ CỤC (LƯỚI) */
+        .hero-section { background-color: #fff; border: var(--border-style); border-radius: var(--border-radius); padding: 40px; box-shadow: 8px 8px 0px var(--primary); margin-bottom: 40px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+        .hero-text { flex: 3; } .hero-image { flex: 2; text-align: center; }
+        .hero-section h1 { font-size: 36px; color: #ff5e5e; margin-bottom: 10px; }
+        .hero-section p.subtitle { font-size: 20px; font-weight: 700; color: #666; }
+
+        .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .info-card { background-color: var(--card-bg); border: var(--border-style); border-radius: var(--border-radius); padding: 25px; box-shadow: 5px 5px 0px #333; position: relative; display: flex; flex-direction: column; }
+        .info-card.goals { background-color: #f8fbff; } .info-card.roadmap { background-color: #fff9e6; }
+        .info-card h3 { font-size: 24px; border-bottom: 2px dashed #ccc; padding-bottom: 10px; margin-bottom: 15px; }
+        
+        .goal-list { list-style: none; padding: 0; margin-top: 20px; }
+        .goal-list li { margin-bottom: 15px; padding-left: 35px; position: relative; font-weight: 600; line-height: 1.5; }
+        .goal-list li::before { content: "✨"; position: absolute; left: 0; top: -2px; font-size: 20px; }
+
+        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .card { background-color: var(--card-bg); border: var(--border-style); border-radius: var(--border-radius); padding: 25px; box-shadow: 6px 6px 0px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card h3 { display: flex; align-items: center; gap: 10px; font-size: 22px; border-bottom: 2px dashed #ccc; padding-bottom: 10px; }
+        
+        .material-item { display: flex; align-items: center; background: #fff9e6; padding: 15px; border-radius: 15px; border: 2px solid #ffcc00; margin-bottom: 15px; text-decoration: none; color: #333; font-weight: bold; transition: transform 0.2s; }
+        .material-item.no-hover:hover { transform: none; cursor: default; }
+        .material-item:not(.no-hover):hover { transform: scale(1.02); }
+        .material-item img, .material-item span.icon { font-size: 24px; margin-right: 15px; }
+
+        .upload-area { border: 3px dashed var(--accent); border-radius: 15px; padding: 30px; text-align: center; background: #f8fbff; cursor: pointer; transition: background 0.3s; }
+        .upload-area:hover { background: #e6f2ff; }
+        .btn-submit { background-color: var(--primary); color: #333; border: var(--border-style); border-radius: 15px; padding: 12px 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; box-shadow: 3px 3px 0px #333; transition: all 0.2s ease; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 5px 5px 0px #333; }
+        .assignment-form { display: grid; gap: 15px; }
+        .assignment-form label { display: grid; gap: 6px; font-weight: bold; }
+        .assignment-form input, .assignment-form textarea { width: 100%; box-sizing: border-box; padding: 12px; border: 2px solid #ccc; border-radius: 10px; font: inherit; }
+        .assignment-form textarea { min-height: 100px; resize: vertical; }
+        .assignment-form input[type="url"] { min-width: 0; }
+        .lesson-materials { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .assignment-list { display: grid; gap: 15px; }
+        .assignment-card { background: #f8fbff; border: 2px solid var(--accent); border-radius: 15px; padding: 18px; }
+        .assignment-card h3 { margin: 0 0 8px; }
+        .assignment-card p { white-space: pre-wrap; overflow-wrap: anywhere; }
+        .assignment-meta { color: #666; font-size: 14px; }
+        .assignment-download, .assignment-delete { display: inline-block; border: 2px solid #333; border-radius: 10px; padding: 8px 12px; font: inherit; font-weight: bold; text-decoration: none; cursor: pointer; }
+        .assignment-download { background: var(--yellow); color: #333; }
+        .assignment-delete { background: #ff9999; color: #333; margin-left: 8px; }
+
+        .header-banner { background-color: var(--accent); border: var(--border-style); border-radius: var(--border-radius); padding: 20px 30px; margin-bottom: 20px; box-shadow: 5px 5px 0px #333; color: #333; }
+        .portal-input { width: 100%; box-sizing: border-box; padding: 13px; border: 2px solid #ccc; border-radius: 12px; font: inherit; margin: 8px 0 16px; }
+        .portal-form { text-align: left; }
+        .portal-form label { display: block; font-weight: bold; }
+        .class-card, .discussion-post { background: #f8fbff; border: 2px solid var(--accent); border-radius: 15px; padding: 18px; margin-bottom: 15px; }
+        .class-card-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .member-list { list-style: none; padding: 0; margin: 10px 0 0; }
+        .member-list li { background: #fff; border: 1px solid #d5e6ef; border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
+        .member-email { display: block; color: #666; font-size: 13px; overflow-wrap: anywhere; }
+        .portal-action { background: var(--yellow); color: #333; border: 2px solid #333; border-radius: 10px; padding: 8px 12px; font: inherit; font-weight: bold; cursor: pointer; }
+        .portal-action.danger { background: #ff9999; }
+        .portal-status { min-height: 1.4em; font-weight: bold; }
+        .discussion-reply { background: #fff; border-left: 3px solid var(--secondary); padding: 10px 14px; margin: 10px 0 10px 18px; border-radius: 0 10px 10px 0; }
+        .discussion-meta { color: #666; font-size: 14px; margin: 5px 0 10px; }
+        .discussion-post p, .discussion-reply p { white-space: pre-wrap; overflow-wrap: anywhere; }
+        .student-discussion-mode .student-lesson-nav { display: none !important; }
+        .student-shell-nav { display: none; }
+
+        /* INNER TABS */
+        .inner-tabs { display: flex; gap: 15px; margin-bottom: 20px; }
+        .inner-tab-btn { background-color: #f8fbff; border: 2px dashed #ccc; border-radius: 15px; padding: 10px 20px; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: bold; color: #666; cursor: pointer; transition: all 0.2s ease; }
+        .inner-tab-btn:hover { background-color: #e6f2ff; border-color: var(--accent); color: #333; }
+        .inner-tab-btn.active { background-color: var(--accent); border: 2px solid #333; color: #333; box-shadow: 3px 3px 0px #333; }
+        .inner-tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .inner-tab-content.active { display: block; }
+        .plan-step { background: #fff; padding: 15px; border-radius: 10px; border: 2px solid #ccc; margin-bottom: 10px; line-height: 1.5; }
+        .activity-support { background: #f5f8ff; border-left: 4px solid var(--accent); border-radius: 6px; padding: 10px 12px; line-height: 1.5; }
+        .decorative-footer { text-align: center; margin-top: 30px; padding-bottom: 20px; display: flex; justify-content: center; }
+
+        /* ========================================= */
+        /* TƯƠNG TÁC MINIGAME                        */
+        /* ========================================= */
+        .game-trigger { cursor: pointer; position: relative; transition: all 0.3s ease; border-left: 5px solid var(--accent); }
+        .game-trigger:hover { transform: scale(1.02); border-color: var(--accent); background-color: #e6f2ff; box-shadow: 4px 4px 0px rgba(135, 206, 235, 0.5); }
+        .game-badge { background: #ffcc00; color: #333; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 800; position: absolute; right: 15px; top: 12px; border: 2px solid #333; animation: pulse 1s infinite alternate; }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
+
+        .modal-overlay { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px); justify-content: center; align-items: center; }
+        .modal-content { background-color: #fff; padding: 30px; border-radius: 20px; border: 4px solid var(--accent); width: 90%; max-width: 500px; text-align: center; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popUp { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .modal-close { position: absolute; top: 10px; right: 15px; font-size: 24px; font-weight: bold; color: #999; cursor: pointer; transition: 0.2s; background: none; border: none; }
+        .modal-close:hover { color: #ff5e5e; transform: scale(1.2); }
+        .game-choice { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .game-choice button { background: #f8fbff; border: 2px solid #ccc; border-radius: 10px; padding: 12px; font-size: 16px; font-family: 'Nunito', sans-serif; font-weight: bold; cursor: pointer; transition: 0.2s; text-align: left; }
+        .game-choice button:hover { background: #e2f0cb; border-color: #333; transform: translateX(5px); }
+
+        @media (max-width: 768px) {
+            #main-app { flex-direction: column; }
+            .sidebar { width: auto; border-right: none; border-bottom: var(--border-style); flex-direction: row; overflow-x: auto; padding: 10px; }
+            .logo { display: none; }
+            .nav-btn { margin-bottom: 0; margin-right: 10px; white-space: nowrap; }
+            .home-grid, .content-grid { grid-template-columns: 1fr; }
+            .hero-section { flex-direction: column; text-align: center; }
+            .inner-tabs { flex-direction: column; }
+            .game-badge { position: static; display: inline-block; margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+  <!-- ======================================================= -->
+    <!-- 1. MÀN HÌNH ĐĂNG NHẬP                                   -->
+    <!-- ======================================================= -->
+    <div id="login-screen">
+        <div class="login-card">
+            <h1>🤖 Trạm AI 11</h1>
+            <p style="color: #666; font-weight: bold;">TRÍ TUỆ NHÂN TẠO THẾ HỆ MỚI</p>
+            
+            <div class="role-toggle">
+                <button id="btn-role-teacher" class="role-btn active" onclick="setRole('teacher')">👨‍🏫 Giáo Viên</button>
+                <button id="btn-role-student" class="role-btn" onclick="setRole('student')">🎓 Học Sinh</button>
+            </div>
+            
+            <!-- KHU VỰC GIÁO VIÊN -->
+            <div id="teacher-login-fields" style="display: block;">
+                <div id="teacher-name-container" style="width: 100%; text-align: center; margin-bottom: 10px;">
+                    <input type="text" id="login-name" class="login-input" placeholder="Họ tên giáo viên" autocomplete="name">
+                </div>
+                <input type="password" id="login-pass" class="login-input" style="margin-bottom: 20px;" placeholder="Mật khẩu giáo viên" autocomplete="current-password">
+                <button class="btn-login" onclick="doLogin()">🚀 Đăng Nhập Giáo Viên</button>
+            </div>
+
+            <!-- KHU VỰC HỌC SINH -->
+            <form id="student-join-form" style="display: none; text-align: left;" onsubmit="doStudentLogin(event)">
+                <label style="font-weight: bold; font-size: 14px; margin-left: 10px; color: #444;">Họ và tên</label>
+                <input type="text" id="student-name" class="login-input" style="margin-bottom: 10px;" required placeholder="Nhập họ và tên của bạn">
+                
+                <label style="font-weight: bold; font-size: 14px; margin-left: 10px; color: #444;">Email của bạn</label>
+                <input type="email" id="student-email" class="login-input" style="margin-bottom: 10px;" required placeholder="tenban@email.com">
+                
+                <label style="font-weight: bold; font-size: 14px; margin-left: 10px; color: #444;">Mã lớp</label>
+                <input type="text" id="student-class-code" class="login-input" style="margin-bottom: 20px;" required placeholder="Nhập mã lớp...">
+                
+                <button class="btn-login" type="submit">🚀 Tham Gia Lớp</button>
+            </form>
+            
+            <p id="login-msg" style="color: red; font-size: 14px; margin-top: 15px; font-weight: bold;"></p>
+            
+            <div style="margin-top: 20px; font-size: 13px; color: #888; border-top: 1px dashed #ccc; padding-top: 15px;">
+                Giáo viên đăng nhập bằng mật khẩu hiện có. Học sinh dùng họ tên, email và mã lớp do giáo viên cung cấp.
+            </div>
+            
+            <div class="hero-image">
+                <img src="anh-hoc-sinh.png" alt="Học sinh học AI" class="cartoon-img" style="transform: rotate(1deg);">
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- 2. CỬA SỔ MINIGAME CHO HỌC SINH (MODAL)                 -->
+    <!-- ======================================================= -->
+    <div id="minigameModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeMinigame()">✖</button>
+            <h2 style="font-family: 'Baloo 2', cursive; color: #ff5e5e; margin-top: 0;">🎮 Minigame: Ai là AI?</h2>
+            <p>Trong 3 công cụ dưới đây, theo bạn hệ thống nào <b>CÓ sử dụng Trí tuệ nhân tạo (AI)</b>?</p>
+            <div class="game-choice">
+                <button onclick="playGame(false, 'Máy tính Casio chỉ hoạt động bằng các công thức toán học lập trình cứng, không có khả năng tự học hay suy luận đâu nhé!')">A. Máy tính bỏ túi (Casio)</button>
+                <button onclick="playGame(true, 'Hoàn toàn chính xác! Chatbot này sử dụng Xử lý ngôn ngữ tự nhiên (NLP) để hiểu và tạo ra văn bản như con người.')">B. Chatbot (Ví dụ: ChatGPT, Gemini)</button>
+                <button onclick="playGame(false, 'Sai rồi! Quạt máy có hẹn giờ chỉ là một mạch điện tử đếm ngược thời gian đơn giản.')">C. Quạt máy có chế độ hẹn giờ</button>
+            </div>
+            <div id="game-feedback" style="margin-top: 20px; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;"></div>
+        </div>
+    </div>
+
+
+    <!-- ======================================================= -->
+    <!-- 3. ỨNG DỤNG CHÍNH (Sau khi đăng nhập)                   -->
+    <!-- ======================================================= -->
+    <div id="main-app">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="logo">🤖 Trạm AI 11</div>
+            
+            <!-- Nút dành cho Học Sinh -->
+            <button class="nav-btn student-shell-nav student-only" id="nav-student-classwork" onclick="openStudentClasswork()">📚 Lớp học</button>
+            <button class="nav-btn student-shell-nav student-only" id="nav-student-members" onclick="openStudentMembers()">👥 Thành viên lớp</button>
+            <button class="nav-btn student-shell-nav student-only" id="nav-student-discussion" onclick="openStudentDiscussion()">💬 Thảo luận</button>
+            <button class="nav-btn home-btn student-only student-lesson-nav active" id="nav-homepage" onclick="openLesson(event, 'homepage')">🏠 Trang Tổng Quan</button>
+            <button class="nav-btn student-only student-lesson-nav" onclick="openLesson(event, 'lesson7')">📝 Bài 7: AI Trợ thủ</button>
+            <button class="nav-btn student-only student-lesson-nav" onclick="openLesson(event, 'lesson8')">🎯 Bài 8: Prompt</button>
+            <button class="nav-btn student-only student-lesson-nav" onclick="openLesson(event, 'lesson9')">🧩 Bài 9: RAG</button>
+            <button class="nav-btn student-only student-lesson-nav" onclick="openLesson(event, 'lesson10')">🧠 Bài 10: Nơ-ron</button>
+            <button class="nav-btn student-only student-lesson-nav" onclick="openLesson(event, 'lesson11')">⚙️ Bài 11: Thiết kế AI</button>
+            <button class="nav-btn student-only student-lesson-nav" onclick="openLesson(event, 'lesson12')">🚀 Bài 12: Tối ưu hóa</button>
+            <button class="nav-btn student-only student-lesson-nav" id="nav-student-assignments" onclick="openLesson(event, 'student-assignments')">📚 Bài Tập Được Giao</button>
+
+            <!-- Nút dành cho Giáo Viên -->
+            <button class="nav-btn teacher-only" id="nav-teacher-classes" style="display:none; background-color: #e2f0cb;" onclick="openLesson(event, 'teacher-classes')">🏫 Quản Lý Lớp</button>
+            <button class="nav-btn teacher-only" id="nav-teacher-discussion" style="display:none;" onclick="openTeacherDiscussion()">💬 Thảo Luận Lớp</button>
+            <button class="nav-btn teacher-only" id="nav-teacher-dashboard" style="display:none; background-color: #ff9999; border-color: #333; color: #333;" onclick="openLesson(event, 'teacher-dashboard')">📥 Hòm Thư Nhận Bài</button>
+            <button class="nav-btn teacher-only" id="nav-teacher-assignments" style="display:none; background-color: #ffcc00;" onclick="openLesson(event, 'teacher-assignments')">📤 Giao Bài Tập</button>
+
+            <!-- Nút Đăng Xuất Chung -->
+            <div style="flex-grow: 1;"></div>
+            <hr style="border: 1px dashed #ccc; width: 100%; margin: 15px 0;">
+            <button class="nav-btn" style="background-color: #e2f0cb; border-color: #333; text-align: center;" onclick="doLogout()">🚪 Đăng Xuất</button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <!-- ===================== KHU VỰC CỦA GIÁO VIÊN ===================== -->
+            <div id="teacher-classes" class="lesson-section">
+                <div class="header-banner" style="background-color: #e2f0cb;">
+                    <h1>🏫 Quản Lý Lớp Học</h1>
+                    <p>Tạo mã lớp để học sinh tham gia bằng email; thầy/cô có thể đổi tên, đổi mã hoặc xóa lớp.</p>
+                </div>
+                <div class="card">
+                    <h3 id="class-form-heading">✨ Tạo lớp mới</h3>
+                    <form id="class-form" class="assignment-form">
+                        <input id="class-edit-id" type="hidden">
+                        <label for="class-name">Tên lớp *</label>
+                        <input id="class-name" class="portal-input" type="text" required maxlength="80" placeholder="Ví dụ: AI 11A1">
+                        <label for="class-code">Mã lớp *</label>
+                        <input id="class-code" class="portal-input" type="text" required maxlength="24" pattern="(?:[A-Za-z0-9]|-)+" placeholder="Ví dụ: AI11A1">
+                        <div class="class-card-actions">
+                            <button id="class-save-button" class="btn-submit" type="submit" style="width:auto; margin:0;">➕ Tạo lớp</button>
+                            <button id="class-cancel-edit" class="portal-action" type="button" style="display:none;" onclick="cancelClassEdit()">Hủy sửa</button>
+                        </div>
+                        <p id="class-form-status" class="portal-status" role="status" aria-live="polite"></p>
+                    </form>
+                </div>
+                <div class="card">
+                    <h3>📋 Danh sách lớp của thầy/cô</h3>
+                    <div id="teacher-class-list" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <div id="class-discussion" class="lesson-section">
+                <div class="header-banner" style="background-color: #e6f2ff;">
+                    <h1>💬 Diễn Đàn Thảo Luận</h1>
+                    <p id="discussion-class-description">Đăng câu hỏi, chia sẻ ý tưởng và trao đổi cùng giáo viên, các bạn trong lớp.</p>
+                </div>
+                <div id="teacher-discussion-class-picker" class="card" style="display:none;">
+                    <label for="discussion-class-select" style="font-weight:bold;">Chọn lớp muốn xem</label>
+                    <select id="discussion-class-select" class="portal-input" aria-label="Chọn lớp thảo luận"></select>
+                </div>
+                <div class="card">
+                    <h3>📝 Tạo bài đăng</h3>
+                    <form id="discussion-post-form" class="assignment-form">
+                        <label for="discussion-post-content">Nội dung</label>
+                        <textarea id="discussion-post-content" class="portal-input" required maxlength="2000" rows="4" placeholder="Bạn muốn trao đổi điều gì với lớp?"></textarea>
+                        <button class="btn-submit" type="submit" style="width:auto;">📨 Đăng bài</button>
+                        <p id="discussion-status" class="portal-status" role="status" aria-live="polite"></p>
+                    </form>
+                </div>
+                <div class="card">
+                    <h3>📣 Bài đăng của lớp</h3>
+                    <div id="discussion-post-list" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <div id="teacher-assignments" class="lesson-section">
+                <div class="header-banner" style="background-color: #ffcc00;">
+                    <h1>📤 Giao Bài Tập Cho Học Sinh</h1>
+                    <p>Tạo bài tập, đính kèm tài liệu và đăng để học sinh xem trong mục “Bài Tập Được Giao”.</p>
+                </div>
+
+                <div class="card">
+                    <h3>✏️ Tạo bài tập mới</h3>
+                    <form id="teacher-assignment-form" class="assignment-form">
+                        <label for="assignment-title">Tên bài tập *</label>
+                        <input id="assignment-title" name="title" type="text" maxlength="120" required placeholder="Ví dụ: Thiết kế ý tưởng dự án AI">
+
+                        <label for="assignment-description">Hướng dẫn thực hiện *</label>
+                        <textarea id="assignment-description" name="description" maxlength="2000" required placeholder="Mô tả yêu cầu, cách nộp bài hoặc tiêu chí đánh giá..."></textarea>
+
+                        <label for="assignment-due-date">Hạn nộp</label>
+                        <input id="assignment-due-date" name="dueDate" type="date">
+
+                        <label for="assignment-file">Tệp bài tập đính kèm (không bắt buộc)</label>
+                        <input id="assignment-file" name="file" type="file">
+
+                        <button class="btn-submit" type="submit">📨 Đăng bài tập</button>
+                        <p id="teacher-assignment-status" role="status" aria-live="polite" style="margin: 0;"></p>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Bài tập đã giao</h3>
+                    <div id="teacher-assignment-list" class="assignment-list" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <div id="teacher-dashboard" class="lesson-section">
+                <div class="header-banner" style="background-color: #ff9999;">
+                    <h1>👨‍🏫 Bảng Điều Khiển Của Giáo Viên</h1>
+                    <p>Chào mừng thầy/cô! Dưới đây là danh sách bài tập học sinh đã nộp qua hệ thống.</p>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Hòm Thư Nhận Bài Thực Hành</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Link thư mục Drive học sinh gửi sẽ được ghi vào tab “Nộp bài Drive” của Google Sheets.</p>
+                    <p><a class="assignment-download" href="https://docs.google.com/spreadsheets/d/14kCh3QYsA3OfGoqg1PijMc-uQcsOf9qWschntOa5UKc/edit" target="_blank" rel="noopener noreferrer">↗ Mở Google Sheets</a></p>
+                    
+                   
+                    
+
+                    <!-- KHU VỰC NHÚNG GOOGLE SHEETS DÀNH CHO BẠN -->
+                   <div style="border: 3px solid #333; border-radius: 15px; overflow: hidden; height: 80vh; background: #fff; position: relative; width: 100%;">
+    <!-- Nhớ thay LINK_CỦA_BẠN bằng link Google Sheets nhúng thực tế -->
+    <iframe src="https://docs.google.com/spreadsheets/d/14kCh3QYsA3OfGoqg1PijMc-uQcsOf9qWschntOa5UKc/htmlembed?widget=true&amp;headers=false" width="100%" height="100%" frameborder="0" style="position: absolute; top: 0; left: 0;"></iframe>
+</div>
+
+                </div>
+            </div>
+
+            <div id="student-assignments" class="lesson-section">
+                <div class="header-banner">
+                    <h1>📚 Bài Tập Được Giao</h1>
+                    <p>Xem bài tập được giao và gửi link thư mục Drive dùng chung cho bài 7–12.</p>
+                </div>
+                <div class="card">
+                    <h3>📁 Nộp link thư mục Google Drive</h3>
+                    <p>Hãy tải bài làm của các bài 7–12 vào cùng thư mục Drive, cấp quyền xem cho giáo viên rồi gửi link thư mục tại đây. Link sẽ được chuyển vào hòm thư nhận bài của giáo viên.</p>
+                    <form id="drive-submission-form" class="assignment-form">
+                        <label for="student-drive-link">Link thư mục Drive *</label>
+                        <input id="student-drive-link" type="url" required placeholder="https://drive.google.com/drive/folders/...">
+                        <button class="btn-submit" type="submit">📨 Gửi link Drive cho giáo viên</button>
+                        <p id="drive-submission-status" class="portal-status" role="status" aria-live="polite"></p>
+                    </form>
+                </div>
+                <div id="student-assignment-list" class="assignment-list"></div>
+            </div>
+
+            <!-- ===================== KHU VỰC CỦA HỌC SINH ===================== -->
+            <div id="student-class-members" class="lesson-section">
+                <div class="header-banner" style="background-color: #e2f0cb;">
+                    <h1>👥 Thành Viên Lớp</h1>
+                    <p id="student-members-class-name">Danh sách học sinh trong lớp của bạn.</p>
+                </div>
+                <div class="card">
+                    <h3>🧑‍🚀 Các bạn cùng lớp</h3>
+                    <ul id="student-member-list" class="member-list" aria-live="polite"></ul>
+                    <p id="student-member-status" class="portal-status" role="status" aria-live="polite"></p>
+                </div>
+            </div>
+            
+            <!-- TRANG CHỦ -->
+            <div id="homepage" class="lesson-section active student-only-content">
+                <div class="header-banner" style="background-color: #e2f0cb;">
+                    <h2 id="student-class-title" style="margin-bottom:5px;">🏫 Lớp học</h2>
+                    <p id="student-email-label" style="margin:0;"></p>
+                </div>
+                <div class="hero-section">
+                    <div class="hero-text">
+                        <div style="font-size: 50px; margin-bottom: 10px;">🌟🤖🚀</div>
+                        <h1>Trí tuệ nhân tạo thế hệ mới</h1>
+                        <p class="subtitle">Làm chủ công nghệ và ứng dụng AI có trách nhiệm</p>
+                        <p style="color: #666; max-width: 600px; margin: 20px 0;">Chào mừng các bạn học sinh khối 11 đến với chuyên đề AI! Tại đây, chúng ta sẽ chuyển từ việc chỉ là người "sử dụng" sang vai trò "người làm chủ" công nghệ.</p>
+                    </div>
+                    <div class="hero-image">
+                        <img src="anh-hoc-sinh.png" alt="Học sinh học AI" class="cartoon-img" style="transform: rotate(2deg);">
+                    </div>
+                </div>
+
+                <div class="home-grid">
+                    <div class="info-card goals">
+                        <h3>🎯 Mục Tiêu Khóa Học</h3>
+                        <img src="1.png" alt="Mục tiêu" class="cartoon-img" style="height: 200px; width: 100%; object-position: 50% 25%;">
+                        <ul class="goal-list">
+                            <li>Hiểu rõ cơ chế vận hành của mạng nơ-ron, thuật toán AI hiện đại.</li>
+                            <li>Làm chủ kỹ năng thiết kế câu lệnh (Prompt Engineering) nâng cao.</li>
+                            <li>Sử dụng AI để hỗ trợ học tập hiệu quả và giữ vững liêm chính học thuật.</li>
+                            <li>Phân tích rủi ro đạo đức, bảo mật dữ liệu và pháp lý khi dùng AI.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card roadmap">
+                        <h3>🗺️ Lộ Trình 6 Chặng Bay</h3>
+                        <img src="3.png" alt="Lộ trình" class="cartoon-img" style="height: 200px; width: 100%; object-position: center; margin-bottom: 20px;">
+                        <div style="display: flex; flex-direction: column; gap: 10px; flex: 1;">
+                            <div style="background: #fff; padding: 10px 15px; border-radius: 10px; border: 2px solid #ccc;"><b>Bài 7:</b> AI trợ thủ học tập</div>
+                            <div style="background: #fff; padding: 10px 15px; border-radius: 10px; border: 2px solid #ccc;"><b>Bài 8:</b> Kỹ thuật Prompt và Công nghệ AI</div>
+                            <div style="background: #fff; padding: 10px 15px; border-radius: 10px; border: 2px solid #ccc;"><b>Bài 9:</b> Tùy chỉnh hệ thống AI (RAG)</div>
+                            <div style="background: #fff; padding: 10px 15px; border-radius: 10px; border: 2px solid #ccc;"><b>Bài 10:</b> Mạng nơ-ron và Thuật toán</div>
+                            <div style="background: #fff; padding: 10px 15px; border-radius: 10px; border: 2px solid #ccc;"><b>Bài 11 & 12:</b> Thiết kế, Vận hành dự án AI</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NỘI DUNG BÀI 7 -->
+        <div id="lesson7" class="lesson-section">
+            <div class="header-banner" style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                <div style="flex: 1;">
+                    <h1>Bài 7: AI trợ thủ học tập 🚀</h1>
+                    <p>Khám phá cách AI hỗ trợ quá trình học tập và thiết kế các công cụ hỗ trợ cho riêng bạn.</p>
+                </div>
+                <div style="flex-shrink: 0;">
+                    <img src="4.png" alt="Ảnh Bài 7" class="cartoon-img" style="height: 120px; width: auto; transform: rotate(-2deg);">
+                </div>
+            </div>
+
+            <div class="inner-tabs">
+                <button class="inner-tab-btn active" onclick="openInnerTab(event, 'bai7-kehoach')">🎯 Mục tiêu & Kế hoạch</button>
+                <button class="inner-tab-btn" onclick="openInnerTab(event, 'bai7-hoclieu')">📚 Học liệu</button>
+            </div>
+
+            <div id="bai7-kehoach" class="inner-tab-content active">
+                <div class="home-grid">
+                    <div class="info-card goals">
+                        <h3>🎯 Yêu cầu cần đạt</h3>
+                        <ul class="goal-list">
+                            <li>Trình bày được bản chất của Trí tuệ nhân tạo trong môi trường học tập.</li>
+                            <li>Đề xuất được các lợi ích AI hỗ trợ hoạt động học tập.</li>
+                            <li>Ứng dụng AI để tự động hóa việc biên tập học liệu ôn tập cá nhân.</li>
+                        </ul>
+                    </div>
+                    <div class="info-card roadmap">
+                        <h3>📝 Hướng dẫn học tập</h3>
+                        <p style="color: #666; font-size: 14px; margin-top: -5px; margin-bottom: 15px;">Các bước triển khai bài học cụ thể:</p>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            
+                            <!-- ĐÃ NÂNG CẤP HĐ 1 THÀNH NÚT BẤM MINIGAME -->
+                            <div class="plan-step game-trigger" onclick="openMinigame()">
+                                <b>HĐ 1 (Khởi động):</b> Học sinh xem video tình huống và chơi minigame nhận diện AI.
+                                <span class="game-badge">🎮 Click để chơi!</span>
+                            </div>
+                            
+                            <div class="plan-step"><b>HĐ 2 (Khám phá):</b> Xem video giới thiệu các công cụ AI và xem tài liệu (bên tab Học liệu).</div>
+                            <div class="plan-step"><b>HĐ 3 (Vận dụng):</b> Thực hiện bài tập 7.3 được gửi bên TAB học liệu.</div>
+                            <div class="plan-step"><b>HĐ 4 (Mở rộng):</b> Thực hành: Dùng AI giúp tự động hóa việc học cá nhân và nộp báo cáo.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bai7-hoclieu" class="inner-tab-content">
+                <div class="lesson-materials">
+                    <div class="card">
+                        <h3>📚 Không gian Học liệu</h3>
+                        <a href="7.2.docx" download class="material-item">
+                            <span class="icon">📘</span>
+                            <div>
+                                <div style="font-size: 18px;">Tài liệu 7.2</div>
+                                <small style="color: #666; font-weight: normal;">Nhấn để tải file Word (.docx) về máy</small>
+                            </div>
+                        </a>
+                        <a href="BAI7_HD3.docx" download class="material-item">
+                            <span class="icon">📘</span>
+                            <div>
+                                <div style="font-size: 18px;">Bài 7 - Hoạt động 3</div>
+                                <small style="color: #666; font-weight: normal;">Nhấn để tải file Word (.docx) về máy</small>
+                            </div>
+                        </a>
+                        
+                        <div class="material-item no-hover" style="flex-direction: column; align-items: stretch; padding: 20px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <span class="icon">🎬</span>
+                                <div>
+                                    <div style="font-size: 18px;">Video: Giới thiệu ứng dụng AI</div>
+                                    <small style="color: #666; font-weight: normal;">Bấm Play để xem trực tiếp bài giảng nhé!</small>
+                                </div>
+                            </div>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/z-EtmaFJieY?si=wK-Pik-2fO8qF_eW" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            </div>
+                        </div>
+
+                        <div class="material-item no-hover" style="flex-direction: column; align-items: stretch; padding: 20px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <span class="icon">🕹️</span>
+                                <div>
+                                    <div style="font-size: 18px;">Video Tương Tác: Tình huống Esport</div>
+                                    <small style="color: #666; font-weight: normal;">Xem video và trả lời các câu hỏi tương tác ngay trong video nhé!</small>
+                                </div>
+                            </div>
+                            <div class="interactive-video-wrapper">
+                                <iframe src="https://tram-ai-11.h5p.com/content/1293060682628927559/embed" aria-label="Video tình huống tương tác Esport" width="1088" height="637" frameborder="0" allowfullscreen="allowfullscreen" allow="autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *"></iframe>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="decorative-footer">
+                <img src="2_2.png" alt="Nhóm học sinh" class="cartoon-img" style="max-width: 600px; width: 100%; height: auto;">
+            </div>
+        </div>
+
+        <!-- NỘI DUNG BÀI 8 -->
+        <div id="lesson8" class="lesson-section">
+            <div class="header-banner" style="background-color: var(--primary); color: white; display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                <div style="flex: 1;">
+                    <h1 style="color: white;">Bài 8: Kỹ thuật Prompt và Công nghệ AI 🎯</h1>
+                    <p>Học cách "nói chuyện" với AI để ra lệnh chính xác: chia nhỏ nhiệm vụ, ràng buộc đầu ra.</p>
+                </div>
+                <div style="flex-shrink: 0;">
+                    <img src="6.png" alt="Ảnh Bài 8" class="cartoon-img" style="height: 120px; width: auto; transform: rotate(2deg);">
+                </div>
+            </div>
+
+            <div class="inner-tabs">
+                <button class="inner-tab-btn active" onclick="openInnerTab(event, 'bai8-kehoach')">🎯 Mục tiêu & Kế hoạch</button>
+                <button class="inner-tab-btn" onclick="openInnerTab(event, 'bai8-hoclieu')">📚 Học liệu</button>
+            </div>
+
+            <div id="bai8-kehoach" class="inner-tab-content active">
+                <div class="home-grid">
+                    <div class="info-card goals" style="border-color: var(--primary);">
+                        <h3>🎯 Yêu cầu cần đạt</h3>
+                        <ul class="goal-list">
+                            <li>Xác định được một số kĩ thuật prompt nâng cao.</li>
+                            <li>Vận dụng được một số kĩ thuật prompt nâng cao.</li>
+                            <li>Mô tả được một số công nghệ AI cơ bản như: chatbot, xử lí ngôn ngữ tự nhiên, thị giác máy tính, cảm biến.</li>
+                        </ul>
+                    </div>
+                    <div class="info-card roadmap" style="border-color: var(--primary);">
+                        <h3>📝 Hướng dẫn học tập</h3>
+                        <p style="color: #666; font-size: 14px; margin-top: -5px; margin-bottom: 15px;">Nhiệm vụ cụ thể trong 4 hoạt động:</p>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <div class="plan-step"><b>HĐ 1 (Khởi động):</b> Đọc tình huống thiết kế logo của Hùng và Mai. Suy luận: Trí thông minh AI phụ thuộc máy móc hay người ra lệnh?</div>
+                            <div class="plan-step"><b>HĐ 2 (Khám phá):</b> Tìm hiểu công nghệ NLP và Thị giác máy tính. Ghi nhớ công thức Prompt 4 thành phần (Đóng vai, Bối cảnh, Nhiệm vụ, Định dạng).</div>
+                            <div class="plan-step"><b>HĐ 3 (Vận dụng):</b> Bài tập ghép nối công nghệ. Phân tích prompt mẫu. Thực hành nhóm: Thiết kế câu lệnh hoàn chỉnh theo chủ đề tự chọn.</div>
+                            <div class="plan-step"><b>HĐ 4 (Ghi nhớ):</b> Chốt bản chất Prompt. Đọc "Câu chuyện thiết kế những đôi giày" để thấy kết quả bùng nổ khi dùng lệnh chi tiết.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bai8-hoclieu" class="inner-tab-content">
+                <div class="lesson-materials">
+                    <div class="card">
+                         <a href="BAI8_HD1_TINHHUONG.docx" download class="material-item">
+                            <span class="icon">📘</span>
+                            <div>
+                                <div style="font-size: 18px;">BAI8_HD1_TINHHUONG.docx</div>
+                                <small style="color: #666; font-weight: normal;">Nhấn để tải file Word (.docx) về máy</small>
+                            </div>
+                        </a>
+                        
+                        <h3>📚 Cẩm nang Kỹ nghệ Prompt</h3>
+                        <a href="cam_nang_prompt_bai8.docx" download class="material-item">
+                            <span class="icon">📘</span>
+                            <div>
+                                <div style="font-size: 18px;">Infographic: Công thức Prompt nâng cao</div>
+                                <small style="color: #666; font-weight: normal;">Nhấn để tải file Word (.docx) về máy</small>
+                            </div>
+                        </a>
+                        <h3>📚HOẠT ĐỘNG 3</h3>
+                         <a href="BAI8_VANDUNGTRAINGHIEM.docx" download class="material-item">
+                            <span class="icon">📘</span>
+                            <div>
+                                <div style="font-size: 18px;">BAI8_VANDUNGTRAINGHIEM.docx</div>
+                                <small style="color: #666; font-weight: normal;">Nhấn để tải file Word (.docx) về máy</small>
+                            </div>
+                        </a>
+                       <div class="material-item no-hover" style="flex-direction: column; align-items: stretch; padding: 20px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <span class="icon">🎬</span>
+                                <div>
+                                    <div style="font-size: 18px;">Video: Khám phá các công nghệ AI</div>
+                                    <small style="color: #666; font-weight: normal;">Bấm Play để khám phá tại sao AI lại bớt "ngáo" khi có RAG nhé!</small>
+                                </div>
+                            </div>
+                            <div class="interactive-video-wrapper">
+                                <iframe id="video-bai9" src="https://www.youtube.com/embed/1y3wTcKxzEg" title="Video: Giải ngố RAG qua ván Ma Sói" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NỘI DUNG BÀI 9 -->
+        <div id="lesson9" class="lesson-section">
+            <div class="header-banner" style="background-color: var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                <div style="flex: 1;">
+                    <h1>Bài 9: Tùy chỉnh hệ thống (RAG) 🧩</h1>
+                    <p>Khám phá cách giảm thiểu tình trạng AI "ảo giác" và xây dựng trợ lý AI có kiến thức chuyên biệt.</p>
+                </div>
+                <div style="flex-shrink: 0;">
+                    <img src="4.png" alt="Ảnh Bài 9" class="cartoon-img" style="height: 120px; width: auto; transform: rotate(-2deg);">
+                </div>
+            </div>
+
+            <div class="inner-tabs">
+                <button class="inner-tab-btn active" onclick="openInnerTab(event, 'bai9-kehoach')">🎯 Mục tiêu & Kế hoạch</button>
+                <button class="inner-tab-btn" onclick="openInnerTab(event, 'bai9-hoclieu')">📚 Học liệu</button>
+            </div>
+
+            <div id="bai9-kehoach" class="inner-tab-content active">
+                <div class="home-grid">
+                    <div class="info-card goals" style="border-color: #8fbc8f;">
+                        <h3>🎯 Yêu cầu cần đạt</h3>
+                        <ul class="goal-list">
+                            <li>Trình bày được khái niệm RAG (Truy xuất tăng cường).</li>
+                            <li>Giải thích được cách RAG giúp giảm hiện tượng sai lệch thông tin (ảo giác) từ AI.</li>
+                            <li>Xác định được một số phương pháp, nhiệm vụ tùy chỉnh hệ thống AI.</li>
+                        </ul>
+                    </div>
+                    <div class="info-card roadmap" style="border-color: #8fbc8f;">
+                        <h3>📝 Hướng dẫn học tập</h3>
+                            <p style="color: #666; font-size: 14px; margin-top: -5px; margin-bottom: 15px;">2 tiết trực tiếp (45 phút/tiết). Sản phẩm cuối: MC9 gồm ảnh/biên bản đối chiếu, trích dẫn nguồn kiểm được và nhận xét có nêu giới hạn của RAG.</p>
+                            <h4 style="margin: 18px 0 8px;">Tiết 1 · Nhận diện và giải thích RAG (45 phút)</h4>
+                            <div class="plan-step">
+                                <b>9.1 · Nhận diện ảo giác AI và hậu quả (12 phút)</b><br>
+                                <b>Mục tiêu:</b> Nhận ra câu trả lời trôi chảy vẫn có thể thiếu căn cứ.<br>
+                                <b>Thực hiện:</b> Đọc case luật sư dùng án lệ AI bịa trên LMS và câu chuyện Ma Sói tự chế trong giáo trình; thảo luận vì sao mô hình có thể đoán sai dữ kiện ngoài nguồn.<br>
+                                <b>Học liệu/cách tổ chức:</b> Case do giáo viên chuẩn bị, giáo trình Bài 9 (tr. 17–22 nội bộ), phiếu câu hỏi; thảo luận nhóm nhỏ. Không xem ví dụ là bằng chứng RAG luôn đúng.<br>
+                                <b>Minh chứng:</b> Mỗi nhóm nêu 1 rủi ro và 2 cách giảm sai lệch, như kiểm chứng nguồn và yêu cầu AI nêu giới hạn.
+                            </div>
+                            <div class="plan-step">
+                                <b>9.2 · Giải thích chuỗi vận hành RAG (18 phút)</b><br>
+                                <b>Mục tiêu:</b> Mô tả được 3 bước RAG và giá trị của việc truy xuất dữ liệu ngoài.<br>
+                                <b>Thực hiện:</b> Xem video/sơ đồ, sắp xếp thẻ <i>truy xuất nguồn → bổ sung bối cảnh vào prompt → tạo câu trả lời</i>; giải thích vì sao nguồn có thể giúp cập nhật thông tin.<br>
+                                <b>Học liệu/cách tổ chức:</b> Sơ đồ và thẻ trình tự; giáo viên dùng phép so sánh “thi mở tài liệu”, nhắc rằng truy xuất vẫn có thể sai.<br>
+                                <b>Minh chứng:</b> Vẽ đúng 3 bước và nêu 1 giới hạn khi nguồn kém chất lượng.
+                            </div>
+                            <div class="plan-step">
+                                <b>9.3 · Thảo luận trường hợp RAG giúp kiểm chứng (15 phút)</b><br>
+                                <b>Mục tiêu:</b> Giải thích được vai trò và giới hạn của dữ liệu tham chiếu.<br>
+                                <b>Thực hiện:</b> So sánh câu trả lời về nội quy trước/sau khi có văn bản; đề xuất 2 câu hỏi có dữ kiện và 1 câu hỏi ngoài tài liệu cho tiết thực hành.<br>
+                                <b>Học liệu/cách tổ chức:</b> Phiếu so sánh và quy chế/nội quy mẫu đã được giáo viên xác minh, cho phép sử dụng; nhóm báo cáo ngắn, giáo viên yêu cầu trích nguồn.<br>
+                                <b>Minh chứng:</b> Bảng 3 câu hỏi kiểm thử kèm giả thuyết về khác biệt trước/sau khi có tài liệu.
+                            </div>
+                            <h4 style="margin: 22px 0 8px;">Tiết 2 · Nạp nguồn, kiểm thử và báo cáo (45 phút)</h4>
+                            <div class="plan-step">
+                                <b>9.4 · Nạp tài liệu được cấp vào công cụ AI (12 phút)</b><br>
+                                <b>Mục tiêu:</b> Dùng công cụ đọc tệp để đặt câu hỏi trong phạm vi tài liệu.<br>
+                                <b>Thực hiện:</b> Theo cặp, mở NotebookLM hoặc công cụ hỗ trợ tệp; nạp PDF “Quy chế thi đua” mẫu/được công khai và dùng prompt yêu cầu chỉ trả lời dựa trên nguồn.<br>
+                                <b>Học liệu/cách tổ chức:</b> PDF có số mục, prompt mẫu và thiết bị; chỉ dùng tài liệu không có dữ liệu riêng tư. Nếu công cụ lỗi/từ chối tệp, dùng transcript và phiếu dự phòng.<br>
+                                <b>Minh chứng:</b> Nguồn đã nạp (hoặc phiếu dự phòng), prompt ràng buộc nguồn và ảnh thao tác.
+                            </div>
+                            <div class="plan-step">
+                                <b>9.5 · Kiểm thử trong và ngoài phạm vi nguồn (23 phút)</b><br>
+                                <b>Mục tiêu:</b> Đánh giá câu trả lời dựa trên nguồn và nhận ra khi AI vượt quá dữ kiện.<br>
+                                <b>Thực hiện:</b> Đặt ít nhất 2 câu hỏi có đáp án trong PDF và 1 câu ngoài tài liệu; đối chiếu từng câu với trang/mục, so sánh câu trả lời trước khi nạp nếu có, đánh dấu sai/thiếu căn cứ; đổi phiếu để kiểm tra chéo.<br>
+                                <b>Học liệu/cách tổ chức:</b> Bộ câu hỏi ở 9.3, PDF gốc và bảng MC9. Giáo viên hỗ trợ khi AI dẫn nguồn sai hoặc khẳng định tuyệt đối.<br>
+                                <b>Minh chứng:</b> MC9 có ít nhất 3 trường hợp, trích đoạn nguồn đối chiếu và 1 giới hạn của AI.
+                            </div>
+                            <div class="plan-step">
+                                <b>9.6 · Báo cáo ngắn kết quả thực hành (10 phút)</b><br>
+                                <b>Mục tiêu:</b> Rút ra điều kiện giúp tăng độ tin cậy bằng tài liệu nguồn.<br>
+                                <b>Thực hiện:</b> Chọn 2 ảnh câu trả lời trước/sau khi nạp tệp (hoặc hai lượt thử tương ứng), viết 2–3 câu nhận xét vai trò dữ liệu và giới hạn; nộp MC9 trên LMS.<br>
+                                <b>Học liệu/cách tổ chức:</b> Mẫu MC9, ảnh hoặc phiếu mô phỏng dự phòng; giáo viên phản hồi nhanh về bằng chứng và kết luận.<br>
+                                <b>Minh chứng hoàn thành:</b> MC9 có ảnh/biên bản, trích nguồn kiểm được và không tuyệt đối hóa độ chính xác của RAG.
+                            </div>
+                            <p class="activity-support"><b>Trước Bài 9 (tự học trên LMS, không tính vào 2 tiết):</b> Đọc case luật sư/ảo giác AI và trả lời ngắn vì sao cần xác minh nguồn.</p>
+                        </div>
+                    </div>
+                </div>
+
+            <div id="bai9-hoclieu" class="inner-tab-content">
+                <div class="lesson-materials">
+                    <div class="card">
+                        <h3>📚 Không gian Học liệu</h3>
+                        <a href="B9_Phieu_hoc_tap.html" download class="material-item">
+                            <span class="icon">📝</span>
+                            <div>
+                                <div style="font-size: 18px;">Phiếu học tập Bài 9 và mẫu MC9</div>
+                                <small style="color: #666; font-weight: normal;">Case mô phỏng, thẻ quy trình RAG, câu hỏi kiểm thử và phiếu ghi bằng chứng.</small>
+                            </div>
+                        </a>
+                        <a href="B9_Quy_che_thi_dua_mau.html" download class="material-item">
+                            <span class="icon">📄</span>
+                            <div>
+                                <div style="font-size: 18px;">Nguồn mẫu: Quy chế thi đua giả định</div>
+                                <small style="color: #666; font-weight: normal;">Tài liệu không chứa dữ liệu cá nhân; mở và in/lưu thành PDF để nạp vào công cụ AI.</small>
+                            </div>
+                        </a>
+                        <div class="material-item no-hover" style="flex-direction: column; align-items: stretch; padding: 20px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <span class="icon">🎬</span>
+                                <div>
+                                    <div style="font-size: 18px;">Video: Giải ngố RAG qua ván Ma Sói</div>
+                                    <small style="color: #666; font-weight: normal;">Bấm Play để khám phá tại sao AI lại bớt "ngáo" khi có RAG nhé!</small>
+                                </div>
+                            </div>
+                            <div class="interactive-video-wrapper">
+                                <iframe id="video-bai9" src="https://www.youtube.com/embed/JtxGwIO1wUY" title="Video Bài 9" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NỘI DUNG BÀI 10 -->
+        <div id="lesson10" class="lesson-section">
+            <div class="header-banner" style="background-color: #ffe4e1; display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                <div style="flex: 1;">
+                    <h1>Bài 10: Mạng Nơ-ron và Thuật toán 🧠</h1>
+                    <p>Khám phá cách AI mô phỏng bộ não con người và học cách gom nhóm, phân loại vạn vật.</p>
+                </div>
+                <div style="flex-shrink: 0;">
+                    <img src="4.png" alt="Ảnh Bài 10" class="cartoon-img" style="height: 120px; width: auto; transform: rotate(-2deg);">
+                </div>
+            </div>
+
+            <div class="inner-tabs">
+                <button class="inner-tab-btn active" onclick="openInnerTab(event, 'bai10-kehoach')">🎯 Mục tiêu & Kế hoạch</button>
+                <button class="inner-tab-btn" onclick="openInnerTab(event, 'bai10-hoclieu')">📚 Học liệu</button>
+            </div>
+
+            <div id="bai10-kehoach" class="inner-tab-content active">
+                <div class="home-grid">
+                    <div class="info-card goals" style="border-color: #f08080;">
+                        <h3>🎯 Yêu cầu cần đạt</h3>
+                        <ul class="goal-list">
+                            <li>Nhận diện được 3 phần của mạng nơ-ron: đầu vào (Input), lớp ẩn (Hidden) và đầu ra (Output).</li>
+                            <li>Phân biệt được phân lớp với nhãn có sẵn và phân cụm theo điểm tương đồng.</li>
+                            <li>Điều chỉnh được ít nhất hai cấu hình mô phỏng và giải thích lựa chọn bằng kết quả quan sát.</li>
+                        </ul>
+                    </div>
+                    <div class="info-card roadmap" style="border-color: #f08080;">
+                        <h3>📝 Hướng dẫn học tập</h3>
+                        <p style="color: #666; font-size: 14px; margin-top: -5px; margin-bottom: 15px;">2 tiết trực tiếp (45 phút/tiết). Minh chứng MC10: ảnh ít nhất 2 cấu hình Playground và phiếu so sánh kết quả/mô tả lớp ẩn.</p>
+                        <h4 style="margin: 18px 0 8px;">Tiết 1 · Mạng nơ-ron, phân lớp và phân cụm (45 phút)</h4>
+                        <div class="plan-step">
+                            <b>10.1 · Nhận diện cấu trúc mạng và hai loại thuật toán (15 phút)</b><br>
+                            <b>Mục tiêu:</b> Nhận diện ba phần của mạng nơ-ron và phân biệt dữ liệu có nhãn/chưa có nhãn.<br>
+                            <b>Thực hiện:</b> Cá nhân điền Input–Hidden–Output trên hình; theo nhóm so sánh playlist đã có nhãn với 100 bản nhạc chưa có nhãn.<br>
+                            <b>Học liệu/cách tổ chức:</b> Infographic 3 lớp, hai tình huống âm nhạc, phiếu 3 phần; cá nhân làm trước, nhóm giải thích sau. Giáo viên chỉnh hiểu lầm phân cụm và phân lớp là một.<br>
+                            <b>Minh chứng:</b> Chỉ đúng 3 phần và nêu 1 khác biệt giữa phân lớp/phân cụm bằng ví dụ.
+                        </div>
+                        <div class="plan-step">
+                            <b>10.2 · Thực hành bằng bộ thẻ phân lớp/phân cụm (30 phút)</b><br>
+                            <b>Mục tiêu:</b> Mô tả được khác biệt logic của hai nhiệm vụ học máy.<br>
+                            <b>Thực hiện:</b> Nhóm 3–4 phân loại thẻ theo 2 nhãn cho trước; sau đó nhận tập sở thích chưa có nhãn, tự chọn tiêu chí tương đồng để chia cụm và giải thích tiêu chí.<br>
+                            <b>Học liệu/cách tổ chức:</b> Bộ thẻ playlist/sở thích, bảng ghi tiêu chí và giáo trình Bài 10 (tr. 23–28); nhóm cử người trình bày. Giáo viên hỏi nhãn được đặt trước hay nhóm tự tìm sau.<br>
+                            <b>Minh chứng:</b> Một bảng phân lớp và sơ đồ phân cụm có lý do; không đảo lẫn hai thuật toán.
+                        </div>
+                        <h4 style="margin: 22px 0 8px;">Tiết 2 · Mô phỏng và so sánh kiến trúc (45 phút)</h4>
+                        <div class="plan-step">
+                            <b>10.3 · Làm quen TensorFlow Playground (10 phút)</b><br>
+                            <b>Mục tiêu:</b> Xác định được các điều khiển cần thiết để chạy mô phỏng.<br>
+                            <b>Thực hiện:</b> Theo cặp, mở <a href="https://playground.tensorflow.org" target="_blank" rel="noopener">playground.tensorflow.org</a>, tìm lớp ẩn, số nơ-ron, Play/Reset và vùng ranh giới phân loại; chọn bộ dữ liệu giáo viên chỉ định.<br>
+                            <b>Học liệu/cách tổ chức:</b> Thiết bị, Internet và ảnh giao diện dự phòng; giáo viên làm mẫu, không đi sâu toán hay lập trình.<br>
+                            <b>Minh chứng:</b> Mở được mô phỏng và chỉ vị trí thiết lập kiến trúc.
+                        </div>
+                        <div class="plan-step">
+                            <b>10.4 · Điều chỉnh lớp ẩn/nơ-ron và quan sát (25 phút)</b><br>
+                            <b>Mục tiêu:</b> Quan sát ảnh hưởng của kiến trúc tới kết quả phân loại.<br>
+                            <b>Thực hiện:</b> Dùng cùng bộ dữ liệu và điều kiện khởi đầu; chạy cấu hình A ít lớp ẩn và cấu hình B tăng/giảm số lớp hoặc số nơ-ron. Ghi cấu hình, vùng phân loại/độ lỗi quan sát được và chụp mỗi cấu hình; chỉ đổi một yếu tố giữa hai lần.<br>
+                            <b>Học liệu/cách tổ chức:</b> Playground và phiếu log MC10; làm theo cặp. Không kết luận nhiều lớp luôn tốt hơn.<br>
+                            <b>Minh chứng:</b> Ít nhất 2 cấu hình có ảnh (hoặc hình thay thế) và một so sánh dựa trên quan sát.
+                        </div>
+                        <div class="plan-step">
+                            <b>10.5 · Lý giải cấu hình và nộp MC10 (10 phút)</b><br>
+                            <b>Mục tiêu:</b> Chọn kiến trúc phù hợp với bài toán thay vì chỉ nhìn độ phức tạp.<br>
+                            <b>Thực hiện:</b> Nhóm chọn cấu hình, giải thích dựa trên ranh giới phân loại/độ lỗi/tốc độ quan sát và nộp MC10 lên LMS.<br>
+                            <b>Học liệu/cách tổ chức:</b> Bảng so sánh MC10; giáo viên yêu cầu lý giải có căn cứ, cân bằng độ phù hợp và độ phức tạp.<br>
+                            <b>Minh chứng hoàn thành:</b> MC10 có ảnh, thông số, kết quả và ít nhất 2 câu lý giải lựa chọn.
+                        </div>
+                        <p class="activity-support"><b>Trước giờ học (tự học, không tính vào 2 tiết):</b> Xem infographic 3 lớp, hoàn thành phiếu nhận diện Input/Hidden/Output trên LMS; có thể đọc phần mạng nơ-ron của Elements of AI nếu truy cập được.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bai10-hoclieu" class="inner-tab-content">
+                <div class="lesson-materials">
+                    <div class="card">
+                        <h3>📚 Cẩm nang Học tập</h3>
+                        <a href="B10_Phieu_hoc_tap_MC10.html" download class="material-item">
+                            <span class="icon">📝</span>
+                            <div>
+                                <div style="font-size: 18px;">Phiếu học tập và nhật ký MC10</div>
+                                <small style="color: #666; font-weight: normal;">Nhận diện 3 lớp, ghi cấu hình A/B, quan sát và lý giải lựa chọn.</small>
+                            </div>
+                        </a>
+                        <a href="B10_The_phan_lop_phan_cum.html" download class="material-item">
+                            <span class="icon">🃏</span>
+                            <div>
+                                <div style="font-size: 18px;">Bộ thẻ playlist: phân lớp & phân cụm</div>
+                                <small style="color: #666; font-weight: normal;">Thẻ có nhãn và thẻ sở thích chưa gắn nhãn để in, cắt và làm việc nhóm.</small>
+                            </div>
+                        </a>
+                        <a href="cam_nang_bai_10.docx" download class="material-item">
+                            <span class="icon">📘</span>
+                            <div>
+                                <div style="font-size: 18px;">Infographic: Mạng Nơ-ron & Thuật toán</div>
+                                <small style="color: #666; font-weight: normal;">Nhấn để tải file Word (.docx) về máy</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NỘI DUNG BÀI 11 -->
+        <div id="lesson11" class="lesson-section">
+            <div class="header-banner" style="background-color: #e0ffff; display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                <div style="flex: 1;">
+                    <h1>Bài 11: Thiết kế hệ thống AI ⚙️</h1>
+                    <p>Khám phá quy trình 4 bước thiết kế dự án và sử dụng biểu mẫu AI Project Canvas.</p>
+                </div>
+                <div style="flex-shrink: 0;">
+                    <img src="4.png" alt="Ảnh Bài 11" class="cartoon-img" style="height: 120px; width: auto; transform: rotate(-2deg);">
+                </div>
+            </div>
+
+            <div class="inner-tabs">
+                <button class="inner-tab-btn active" onclick="openInnerTab(event, 'bai11-kehoach')">🎯 Mục tiêu & Kế hoạch</button>
+                <button class="inner-tab-btn" onclick="openInnerTab(event, 'bai11-hoclieu')">📚 Học liệu</button>
+            </div>
+
+            <div id="bai11-kehoach" class="inner-tab-content active">
+                <div class="home-grid">
+                    <div class="info-card goals" style="border-color: #20b2aa;">
+                        <h3>🎯 Yêu cầu cần đạt</h3>
+                        <ul class="goal-list">
+                            <li>Trình bày được quy trình 4 bước thiết kế và vận hành tổng thể của một hệ thống AI.</li>
+                            <li>Xác định được các thành phần cốt lõi của một hệ thống AI và mối quan hệ giữa mục tiêu – dữ liệu – các thành phần trong hệ thống.</li>
+                            <li>Lập được bản thiết kế dự án AI giải quyết một vấn đề thực tế ở trường học bằng biểu mẫu AI Project Canvas và bảo vệ được tính khả thi của bản thiết kế.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card roadmap" style="border-color: #20b2aa;">
+                        <h3>📝 Hướng dẫn học tập</h3>
+                        <p style="color: #666; font-size: 14px; margin-top: -5px; margin-bottom: 15px;">Nhiệm vụ cụ thể trong 4 hoạt động:</p>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <div class="plan-step"><b>HĐ 1 (Khởi động):</b> Đọc tình huống "Thùng rác thông minh". Phân tích nguyên nhân AI nhận diện sai do dữ liệu không khớp bối cảnh thực tế.</div>
+                            <div class="plan-step"><b>HĐ 2 (Khám phá):</b> Tìm hiểu 6 thành phần cốt lõi, quy trình thiết kế 4 bước và cấu trúc biểu mẫu AI Project Canvas (8 ô).</div>
+                            <div class="plan-step"><b>HĐ 3 (Vận dụng):</b> Bài tập ghép nối 6 thành phần. Trải nghiệm nhóm: Đóng vai "Kỹ sư thiết kế AI học đường", lập bản AI Project Canvas.</div>
+                            <div class="plan-step"><b>HĐ 4 (Ghi nhớ):</b> Đọc "Sự cố AI tuyển dụng của Amazon" để nhận thức sâu sắc nguyên lý GIGO (Nhập rác vào, xuất rác ra).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bai11-hoclieu" class="inner-tab-content">
+                <div class="lesson-materials">
+                    <div class="card">
+                        <h3>📚 Không gian Học liệu</h3>
+                        <a href="cam_nang_bai_11.docx" download class="material-item">
+                            <span class="icon">📘</span>
+                            <div>
+                                <div style="font-size: 18px;">Infographic: Thiết kế Hệ thống AI</div>
+                                <small style="color: #666; font-weight: normal;">Nhấn để tải file Word (.docx) về máy</small>
+                            </div>
+                        </a>
+                        <a href="B11_AI_Project_Canvas_A3.html" download class="material-item">
+                            <span class="icon">🗂️</span>
+                            <div>
+                                <div style="font-size: 18px;">Biểu mẫu AI Project Canvas 8 ô (A3)</div>
+                                <small style="color: #666; font-weight: normal;">Canvas in khổ A3, gồm mục tiêu, dữ liệu, mô hình, tiêu chí và rủi ro.</small>
+                            </div>
+                        </a>
+                        <a href="B11_Phieu_phan_bien_du_lieu.html" download class="material-item">
+                            <span class="icon">📝</span>
+                            <div>
+                                <div style="font-size: 18px;">Phiếu tình huống, góp ý và kế hoạch dữ liệu</div>
+                                <small style="color: #666; font-weight: normal;">Tình huống thùng rác, trình tự 4 bước, checklist phản biện Canvas.</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NỘI DUNG BÀI 12 -->
+        <div id="lesson12" class="lesson-section">
+            <div class="header-banner" style="background-color: #f5fffa; display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                <div style="flex: 1;">
+                    <h1>Bài 12: Vận hành và Tối ưu hóa 🚀</h1>
+                    <p>Khám phá luồng vận hành thực tế của AI, cách khắc phục lỗi và nguyên lý Edge AI (AI tại biên).</p>
+                </div>
+                <div style="flex-shrink: 0;">
+                    <img src="4.png" alt="Ảnh Bài 12" class="cartoon-img" style="height: 120px; width: auto; transform: rotate(-2deg);">
+                </div>
+            </div>
+
+            <div class="inner-tabs">
+                <button class="inner-tab-btn active" onclick="openInnerTab(event, 'bai12-kehoach')">🎯 Mục tiêu & Kế hoạch</button>
+                <button class="inner-tab-btn" onclick="openInnerTab(event, 'bai12-hoclieu')">📚 Học liệu</button>
+            </div>
+
+            <div id="bai12-kehoach" class="inner-tab-content active">
+                <div class="home-grid">
+                    <div class="info-card goals" style="border-color: #dda0dd;">
+                        <h3>🎯 Yêu cầu cần đạt</h3>
+                        <ul class="goal-list">
+                            <li>Trình bày được quy trình vận hành tổng thể của hệ thống AI trong thực tế (từ thu nhận đến phản hồi).</li>
+                            <li>Nhận diện được các lỗi thường gặp, nguyên nhân và cách tối ưu hóa (sửa dữ liệu trước, chỉnh tham số sau).</li>
+                            <li>Vận dụng vòng lặp tối ưu hóa và ghi chép "Nhật ký tối ưu hóa" để khắc phục lỗi cho dự án.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card roadmap" style="border-color: #dda0dd;">
+                        <h3>📝 Hướng dẫn học tập</h3>
+                        <p style="color: #666; font-size: 14px; margin-top: -5px; margin-bottom: 15px;">Nhiệm vụ cụ thể trong 4 hoạt động:</p>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <div class="plan-step"><b>HĐ 1 (Khởi động):</b> Đọc tình huống AI thùng rác thông minh của nhóm Vy nhận diện sai khi đem ra căng tin thực tế. Suy luận nên sửa mô hình hay sửa dữ liệu trước?</div>
+                            <div class="plan-step"><b>HĐ 2 (Khám phá):</b> So sánh giai đoạn Huấn luyện và Vận hành. Phân tích luồng vận hành 5 bước (Thu nhận ➜ Xử lý ➜ Dự đoán ➜ Ra quyết định ➜ Phản hồi). Nắm nguyên tắc: Mỗi lần sửa 1 yếu tố.</div>
+                            <div class="plan-step"><b>HĐ 3 (Vận dụng):</b> Sắp xếp 5 bước vận hành thực tế. Trải nghiệm gỡ lỗi mô hình: Huấn luyện ➜ Kiểm thử ➜ Điều chỉnh 1 yếu tố ➜ Huấn luyện lại. Ghi chép "Nhật ký tối ưu hóa".</div>
+                            <div class="plan-step"><b>HĐ 4 (Ghi nhớ):</b> Chốt lại vòng lặp tối ưu hóa. Đọc "Bài toán 20 phút của NASA" để tìm hiểu công nghệ Edge AI (AI tại biên), cắt tỉa (Pruning) và lượng tử hóa (Quantization).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bai12-hoclieu" class="inner-tab-content">
+                <div class="lesson-materials">
+                    <div class="card">
+                        <h3>📚 Cẩm nang Học tập</h3>
+                        <a href="B12_Nhat_ky_toi_uu_MC12.html" download class="material-item">
+                            <span class="icon">📝</span>
+                            <div>
+                                <div style="font-size: 18px;">Nhật ký kiểm thử và tối ưu MC12</div>
+                                <small style="color: #666; font-weight: normal;">Ghi cấu hình gốc, kiểm thử độc lập, hai lượt điều chỉnh và checklist demo.</small>
+                            </div>
+                        </a>
+                        <a href="cam_nang_bai_12.docx" download class="material-item">
+                            <span class="icon">📘</span>
+                            <div>
+                                <div style="font-size: 18px;">Infographic: Vận hành & Tối ưu hóa AI</div>
+                                <small style="color: #666; font-weight: normal;">Nhấn để tải file Word (.docx) về máy</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================= -->
+    <!-- JAVASCRIPT HỆ THỐNG ĐIỀU KHIỂN                          -->
+    <!-- ======================================================= -->
+    <script>
+        // --- 1. LOGIC ĐĂNG NHẬP & PHÂN QUYỀN ---
+        let currentRole = 'teacher';
+        let currentClass = null;
+        let currentStudentEmail = '';
+        let currentStudentName = '';
+        const DRIVE_SUBMISSION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzg7UE-Q4cz-8tB6vXRiHopPvuhHU74997Krbeyb9fMAheNOcsbFt8ACxQgjtzUOWwaRg/exec';
+
+     function setRole(role) {
+    currentRole = role;
+    
+    // Đổi màu nút bấm chọn vai trò
+    document.getElementById('btn-role-student').classList.remove('active');
+    document.getElementById('btn-role-teacher').classList.remove('active');
+    document.getElementById('btn-role-' + role).classList.add('active');
+    
+    // Xóa dòng thông báo lỗi (nếu có)
+    document.getElementById('login-msg').innerText = ''; 
+    
+    // ẨN/HIỆN ĐÚNG KHỐI GIAO DIỆN
+    if(role === 'student') {
+        // Nếu là Học sinh: Ẩn khu vực giáo viên, HIỆN form 3 ô của học sinh
+        document.getElementById('teacher-login-fields').style.display = 'none';
+        document.getElementById('student-join-form').style.display = 'block';
+    } else {
+        // Nếu là Giáo viên: Hiện khu vực giáo viên, Ẩn form của học sinh
+        document.getElementById('teacher-login-fields').style.display = 'block';
+        document.getElementById('student-join-form').style.display = 'none';
+    }
+}
+
+        function doLogin() {
+            const pass = document.getElementById('login-pass').value;
+            const app = document.getElementById('main-app');
+            const loginScreen = document.getElementById('login-screen');
+            const msg = document.getElementById('login-msg');
+
+            if (pass === 'admin') {
+                loginScreen.style.display = 'none';
+                app.style.display = 'flex';
+                document.querySelectorAll('.student-only').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.teacher-only').forEach(el => el.style.display = 'block');
+                document.getElementById('teacher-discussion-class-picker').style.display = 'block';
+                renderTeacherClasses();
+                openLesson(null, 'teacher-classes', 'nav-teacher-classes');
+                refreshAssignmentLists();
+            } else {
+                msg.innerText = 'Mật khẩu giáo viên không đúng. Vui lòng thử lại.';
+            }
+        }
+
+        function enterStudentClass(studentClass, email, name) {
+            currentRole = 'student';
+            currentClass = studentClass;
+            currentStudentEmail = email;
+            currentStudentName = name;
+            document.getElementById('login-screen').style.display = 'none';
+            const app = document.getElementById('main-app');
+            app.style.display = 'flex';
+            app.classList.remove('student-discussion-mode');
+            document.getElementById('student-class-title').textContent = '🏫 ' + studentClass.name;
+            document.getElementById('student-email-label').textContent = 'Xin chào ' + currentStudentName + ' · Email: ' + email;
+            document.getElementById('student-drive-link').value = getSavedDriveLink();
+            document.querySelectorAll('.student-only').forEach(function(element) {
+                element.style.display = 'block';
+            });
+            document.querySelectorAll('.teacher-only').forEach(function(element) {
+                element.style.display = 'none';
+            });
+            document.querySelectorAll('.student-shell-nav').forEach(function(element) {
+                element.style.display = 'block';
+            });
+            document.getElementById('teacher-discussion-class-picker').style.display = 'none';
+            openStudentClasswork();
+            refreshAssignmentLists();
+        }
+
+        document.getElementById('student-join-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('student-name').value.trim();
+            const email = document.getElementById('student-email').value.trim().toLowerCase();
+            const code = document.getElementById('student-class-code').value.trim().toUpperCase();
+            const message = document.getElementById('login-msg');
+            if (!name || !email || !code) {
+                message.textContent = 'Vui lòng nhập họ tên, email và mã lớp.';
+                return;
+            }
+            try {
+                const classes = getStoredRecords(CLASS_STORAGE_KEY);
+                const studentClass = classes.find(function(item) {
+                    return item.code.toUpperCase() === code;
+                });
+                if (!studentClass) {
+                    message.textContent = 'Không tìm thấy mã lớp. Hãy kiểm tra lại với giáo viên.';
+                    return;
+                }
+                if (!Array.isArray(studentClass.members)) studentClass.members = [];
+                const existingMember = studentClass.members.find(function(member) {
+                    return typeof member.email === 'string' && member.email.toLowerCase() === email;
+                });
+                if (existingMember) {
+                    existingMember.name = name;
+                } else {
+                    studentClass.members.push({ name: name, email: email, joinedAt: new Date().toISOString() });
+                }
+                saveStoredRecords(CLASS_STORAGE_KEY, classes);
+                enterStudentClass(studentClass, email, name);
+            } catch (error) {
+                message.textContent = 'Không thể tham gia lớp: ' + error.message;
+                console.error('Không thể tham gia lớp:', error);
+            }
+        });
+
+        function doLogout() {
+            const app = document.getElementById('main-app');
+            app.style.display = 'none';
+            app.classList.remove('student-discussion-mode');
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('login-pass').value = '';
+            document.getElementById('student-name').value = '';
+            document.getElementById('student-email').value = '';
+            document.getElementById('student-class-code').value = '';
+            document.getElementById('login-msg').textContent = '';
+            document.querySelectorAll('.student-shell-nav').forEach(function(element) {
+                element.style.display = 'none';
+            });
+            document.querySelectorAll('.lesson-section').forEach(el => el.classList.remove('active'));
+            currentClass = null;
+            currentStudentEmail = '';
+            currentStudentName = '';
+            setRole('teacher');
+        }
+        
+
+        // --- 2. LOGIC MENU ĐIỀU HƯỚNG BÀI HỌC ---
+        function openLesson(evt, lessonId, btnIdToActivate) {
+            var i, sections, navlinks;
+            sections = document.getElementsByClassName("lesson-section");
+            for (i = 0; i < sections.length; i++) {
+                sections[i].classList.remove("active");
+            }
+            navlinks = document.getElementsByClassName("nav-btn");
+            for (i = 0; i < navlinks.length; i++) {
+                navlinks[i].classList.remove("active");
+            }
+            
+            document.getElementById(lessonId).classList.add("active");
+            
+            if (evt && evt.currentTarget) {
+                evt.currentTarget.classList.add("active");
+            } else if (btnIdToActivate) {
+                document.getElementById(btnIdToActivate).classList.add("active");
+            }
+            if (lessonId === 'class-discussion') refreshDiscussionPosts();
+            if (lessonId === 'teacher-classes') renderTeacherClasses();
+        }
+
+        const CLASS_STORAGE_KEY = 'tram-ai-classes';
+        const DISCUSSION_STORAGE_KEY = 'tram-ai-discussions';
+
+        function getStoredRecords(storageKey) {
+            const rawValue = window.localStorage.getItem(storageKey);
+            if (!rawValue) return [];
+            const records = JSON.parse(rawValue);
+            if (!Array.isArray(records)) throw new Error('Dữ liệu lưu trữ không đúng định dạng.');
+            return records;
+        }
+
+        function saveStoredRecords(storageKey, records) {
+            window.localStorage.setItem(storageKey, JSON.stringify(records));
+        }
+
+        function createRecordId() {
+            return window.crypto && window.crypto.randomUUID
+                ? window.crypto.randomUUID()
+                : Date.now() + '-' + Math.random().toString(36).slice(2);
+        }
+
+        function renderTeacherClasses() {
+            const list = document.getElementById('teacher-class-list');
+            list.replaceChildren();
+            try {
+                const classes = getStoredRecords(CLASS_STORAGE_KEY);
+                refreshTeacherDiscussionOptions(classes);
+                if (!classes.length) {
+                    list.textContent = 'Chưa có lớp nào. Hãy tạo lớp và chia sẻ mã cho học sinh.';
+                    return;
+                }
+                classes.forEach(function(studentClass) {
+                    const card = document.createElement('article');
+                    card.className = 'class-card';
+                    const title = document.createElement('h3');
+                    title.textContent = studentClass.name;
+                    const code = document.createElement('p');
+                    code.textContent = 'Mã lớp: ' + studentClass.code;
+                    const membersHeading = document.createElement('h4');
+                    const members = Array.isArray(studentClass.members) ? studentClass.members : [];
+                    membersHeading.textContent = '👥 Thành viên (' + members.length + ')';
+                    const memberList = document.createElement('ul');
+                    memberList.className = 'member-list';
+                    if (members.length) {
+                        members.forEach(function(member) {
+                            const item = document.createElement('li');
+                            item.textContent = member.name || 'Chưa có họ tên';
+                            if (member.email) {
+                                const email = document.createElement('span');
+                                email.className = 'member-email';
+                                email.textContent = member.email;
+                                item.appendChild(email);
+                            }
+                            memberList.appendChild(item);
+                        });
+                    } else {
+                        const emptyItem = document.createElement('li');
+                        emptyItem.textContent = 'Chưa có học sinh tham gia lớp.';
+                        memberList.appendChild(emptyItem);
+                    }
+                    const actions = document.createElement('div');
+                    actions.className = 'class-card-actions';
+                    const editButton = document.createElement('button');
+                    editButton.type = 'button';
+                    editButton.className = 'portal-action';
+                    editButton.textContent = '✏️ Sửa lớp';
+                    editButton.addEventListener('click', function() { editClass(studentClass); });
+                    const discussionButton = document.createElement('button');
+                    discussionButton.type = 'button';
+                    discussionButton.className = 'portal-action';
+                    discussionButton.textContent = '💬 Mở thảo luận';
+                    discussionButton.addEventListener('click', function() { openTeacherDiscussion(studentClass.id); });
+                    const deleteButton = document.createElement('button');
+                    deleteButton.type = 'button';
+                    deleteButton.className = 'portal-action danger';
+                    deleteButton.textContent = '🗑️ Xóa lớp';
+                    deleteButton.addEventListener('click', function() { deleteClass(studentClass.id); });
+                    actions.append(editButton, discussionButton, deleteButton);
+                    card.append(title, code, actions, membersHeading, memberList);
+                    list.appendChild(card);
+                });
+            } catch (error) {
+                list.textContent = 'Không thể tải danh sách lớp: ' + error.message;
+                console.error('Không thể tải danh sách lớp:', error);
+            }
+        }
+
+        function refreshTeacherDiscussionOptions(classes) {
+            const select = document.getElementById('discussion-class-select');
+            const selectedId = select.value;
+            select.replaceChildren();
+            classes.forEach(function(studentClass) {
+                const option = document.createElement('option');
+                option.value = studentClass.id;
+                option.textContent = studentClass.name + ' (' + studentClass.code + ')';
+                select.appendChild(option);
+            });
+            if (classes.some(function(studentClass) { return studentClass.id === selectedId; })) {
+                select.value = selectedId;
+            }
+        }
+
+        function editClass(studentClass) {
+            document.getElementById('class-edit-id').value = studentClass.id;
+            document.getElementById('class-name').value = studentClass.name;
+            document.getElementById('class-code').value = studentClass.code;
+            document.getElementById('class-form-heading').textContent = '✏️ Chỉnh sửa lớp';
+            document.getElementById('class-save-button').textContent = '💾 Lưu thay đổi';
+            document.getElementById('class-cancel-edit').style.display = 'inline-block';
+            document.getElementById('class-form-status').textContent = '';
+            document.getElementById('class-name').focus();
+        }
+
+        function cancelClassEdit() {
+            document.getElementById('class-form').reset();
+            document.getElementById('class-edit-id').value = '';
+            document.getElementById('class-form-heading').textContent = '✨ Tạo lớp mới';
+            document.getElementById('class-save-button').textContent = '➕ Tạo lớp';
+            document.getElementById('class-cancel-edit').style.display = 'none';
+            document.getElementById('class-form-status').textContent = '';
+        }
+
+        document.getElementById('class-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const status = document.getElementById('class-form-status');
+            const classId = document.getElementById('class-edit-id').value;
+            const name = document.getElementById('class-name').value.trim();
+            const code = document.getElementById('class-code').value.trim().toUpperCase();
+            try {
+                const classes = getStoredRecords(CLASS_STORAGE_KEY);
+                if (classes.some(function(item) {
+                    return item.code.toUpperCase() === code && item.id !== classId;
+                })) {
+                    status.textContent = 'Mã lớp này đã được sử dụng. Hãy chọn mã khác.';
+                    return;
+                }
+                if (classId) {
+                    const index = classes.findIndex(function(item) { return item.id === classId; });
+                    if (index < 0) throw new Error('Không tìm thấy lớp cần chỉnh sửa.');
+                    classes[index] = Object.assign({}, classes[index], { name: name, code: code });
+                } else {
+                    classes.push({ id: createRecordId(), name: name, code: code, createdAt: new Date().toISOString() });
+                }
+                saveStoredRecords(CLASS_STORAGE_KEY, classes);
+                cancelClassEdit();
+                status.textContent = classId ? 'Đã cập nhật lớp.' : 'Đã tạo lớp. Hãy chia sẻ mã lớp với học sinh.';
+                renderTeacherClasses();
+            } catch (error) {
+                status.textContent = 'Không thể lưu lớp: ' + error.message;
+                console.error('Không thể lưu lớp:', error);
+            }
+        });
+
+        function deleteClass(classId) {
+            if (!window.confirm('Xóa lớp này? Bài đăng thảo luận của lớp cũng sẽ bị xóa.')) return;
+            try {
+                const classes = getStoredRecords(CLASS_STORAGE_KEY).filter(function(item) {
+                    return item.id !== classId;
+                });
+                const posts = getStoredRecords(DISCUSSION_STORAGE_KEY).filter(function(item) {
+                    return item.classId !== classId;
+                });
+                saveStoredRecords(CLASS_STORAGE_KEY, classes);
+                saveStoredRecords(DISCUSSION_STORAGE_KEY, posts);
+                if (document.getElementById('class-edit-id').value === classId) cancelClassEdit();
+                renderTeacherClasses();
+                document.getElementById('class-form-status').textContent = 'Đã xóa lớp và các bài đăng thảo luận.';
+            } catch (error) {
+                document.getElementById('class-form-status').textContent = 'Không thể xóa lớp: ' + error.message;
+                console.error('Không thể xóa lớp:', error);
+            }
+        }
+
+        function openStudentClasswork() {
+            document.getElementById('main-app').classList.remove('student-discussion-mode');
+            openLesson(null, 'homepage', 'nav-homepage');
+            document.getElementById('nav-student-classwork').classList.add('active');
+        }
+
+        function openStudentDiscussion() {
+            document.getElementById('main-app').classList.add('student-discussion-mode');
+            openLesson(null, 'class-discussion', 'nav-student-discussion');
+        }
+
+        function openStudentMembers() {
+            document.getElementById('main-app').classList.remove('student-discussion-mode');
+            const list = document.getElementById('student-member-list');
+            const status = document.getElementById('student-member-status');
+            list.replaceChildren();
+            status.textContent = '';
+            try {
+                const studentClass = getStoredRecords(CLASS_STORAGE_KEY).find(function(item) {
+                    return currentClass && item.id === currentClass.id;
+                });
+                if (!studentClass) throw new Error('Không tìm thấy lớp hiện tại.');
+                currentClass = studentClass;
+                document.getElementById('student-members-class-name').textContent = studentClass.name;
+                const members = Array.isArray(studentClass.members) ? studentClass.members : [];
+                if (!members.length) {
+                    status.textContent = 'Lớp chưa có thành viên nào.';
+                } else {
+                    members.forEach(function(member) {
+                        const item = document.createElement('li');
+                        item.textContent = member.name || 'Chưa có họ tên';
+                        list.appendChild(item);
+                    });
+                }
+                openLesson(null, 'student-class-members', 'nav-student-members');
+            } catch (error) {
+                status.textContent = 'Không thể tải danh sách thành viên: ' + error.message;
+                console.error('Không thể tải danh sách thành viên:', error);
+            }
+        }
+
+        function openTeacherDiscussion(classId) {
+            try {
+                const classes = getStoredRecords(CLASS_STORAGE_KEY);
+                refreshTeacherDiscussionOptions(classes);
+                const select = document.getElementById('discussion-class-select');
+                if (classId) select.value = classId;
+                document.getElementById('teacher-discussion-class-picker').style.display = 'block';
+                select.dispatchEvent(new Event('change'));
+                openLesson(null, 'class-discussion', 'nav-teacher-discussion');
+            } catch (error) {
+                document.getElementById('discussion-status').textContent = 'Không thể mở danh sách lớp: ' + error.message;
+                console.error('Không thể mở danh sách lớp:', error);
+            }
+        }
+
+        function getDiscussionClass() {
+            if (currentRole === 'student') return currentClass;
+            const selectedId = document.getElementById('discussion-class-select').value;
+            return getStoredRecords(CLASS_STORAGE_KEY).find(function(item) {
+                return item.id === selectedId;
+            }) || null;
+        }
+
+        function formatDiscussionDate(dateValue) {
+            const date = new Date(dateValue);
+            return Number.isNaN(date.getTime()) ? '' : date.toLocaleString('vi-VN');
+        }
+
+        function refreshDiscussionPosts() {
+            const list = document.getElementById('discussion-post-list');
+            const status = document.getElementById('discussion-status');
+            const postForm = document.getElementById('discussion-post-form');
+            const postButton = postForm.querySelector('button[type="submit"]');
+            list.replaceChildren();
+            status.textContent = '';
+            let studentClass;
+            try {
+                studentClass = getDiscussionClass();
+            } catch (error) {
+                list.textContent = 'Không thể xác định lớp thảo luận: ' + error.message;
+                console.error('Không thể xác định lớp thảo luận:', error);
+                return;
+            }
+            if (!studentClass) {
+                document.getElementById('discussion-class-description').textContent =
+                    'Hãy tạo lớp trước khi mở thảo luận.';
+                postButton.disabled = true;
+                list.textContent = 'Chưa có lớp để thảo luận.';
+                return;
+            }
+            document.getElementById('discussion-class-description').textContent =
+                'Lớp: ' + studentClass.name + ' · Mã lớp: ' + studentClass.code +
+                ' — Đăng câu hỏi, chia sẻ ý tưởng và trao đổi cùng giáo viên, các bạn trong lớp.';
+            postButton.disabled = false;
+            try {
+                const posts = getStoredRecords(DISCUSSION_STORAGE_KEY)
+                    .filter(function(post) { return post.classId === studentClass.id; })
+                    .sort(function(a, b) { return b.createdAt.localeCompare(a.createdAt); });
+                if (!posts.length) {
+                    list.textContent = 'Chưa có bài đăng nào. Hãy bắt đầu cuộc thảo luận nhé!';
+                    return;
+                }
+                posts.forEach(function(post) {
+                    const card = document.createElement('article');
+                    card.className = 'discussion-post';
+                    const heading = document.createElement('h3');
+                    heading.textContent = post.author + (post.role === 'teacher' ? ' · Giáo viên' : ' · Học sinh');
+                    const date = document.createElement('div');
+                    date.className = 'discussion-meta';
+                    date.textContent = formatDiscussionDate(post.createdAt);
+                    const content = document.createElement('p');
+                    content.textContent = post.content;
+                    card.append(heading, date, content);
+
+                    (Array.isArray(post.replies) ? post.replies : []).forEach(function(reply) {
+                        const replyElement = document.createElement('div');
+                        replyElement.className = 'discussion-reply';
+                        const replyAuthor = document.createElement('strong');
+                        replyAuthor.textContent = reply.author + (reply.role === 'teacher' ? ' · Giáo viên' : ' · Học sinh');
+                        const replyDate = document.createElement('div');
+                        replyDate.className = 'discussion-meta';
+                        replyDate.textContent = formatDiscussionDate(reply.createdAt);
+                        const replyContent = document.createElement('p');
+                        replyContent.textContent = reply.content;
+                        replyElement.append(replyAuthor, replyDate, replyContent);
+                        card.appendChild(replyElement);
+                    });
+
+                    const replyForm = document.createElement('form');
+                    replyForm.className = 'assignment-form';
+                    const replyInput = document.createElement('textarea');
+                    replyInput.className = 'portal-input';
+                    replyInput.required = true;
+                    replyInput.maxLength = 1000;
+                    replyInput.rows = 2;
+                    replyInput.placeholder = 'Viết phản hồi...';
+                    const replyButton = document.createElement('button');
+                    replyButton.type = 'submit';
+                    replyButton.className = 'portal-action';
+                    replyButton.textContent = '↩️ Trả lời';
+                    replyForm.append(replyInput, replyButton);
+                    replyForm.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        const replyText = replyInput.value.trim();
+                        if (!replyText) return;
+                        try {
+                            const allPosts = getStoredRecords(DISCUSSION_STORAGE_KEY);
+                            const targetPost = allPosts.find(function(item) { return item.id === post.id; });
+                            if (!targetPost) throw new Error('Không tìm thấy bài đăng này.');
+                            if (!Array.isArray(targetPost.replies)) targetPost.replies = [];
+                            targetPost.replies.push({
+                                id: createRecordId(),
+                                author: currentRole === 'teacher' ? 'Giáo viên' : currentStudentName,
+                                role: currentRole,
+                                content: replyText,
+                                createdAt: new Date().toISOString()
+                            });
+                            saveStoredRecords(DISCUSSION_STORAGE_KEY, allPosts);
+                            refreshDiscussionPosts();
+                        } catch (error) {
+                            status.textContent = 'Không thể gửi phản hồi: ' + error.message;
+                            console.error('Không thể gửi phản hồi:', error);
+                        }
+                    });
+                    card.appendChild(replyForm);
+
+                    if (currentRole === 'teacher') {
+                        const deleteButton = document.createElement('button');
+                        deleteButton.type = 'button';
+                        deleteButton.className = 'portal-action danger';
+                        deleteButton.textContent = '🗑️ Xóa bài đăng';
+                        deleteButton.addEventListener('click', function() {
+                            if (!window.confirm('Xóa bài đăng và các phản hồi?')) return;
+                            try {
+                                const remainingPosts = getStoredRecords(DISCUSSION_STORAGE_KEY)
+                                    .filter(function(item) { return item.id !== post.id; });
+                                saveStoredRecords(DISCUSSION_STORAGE_KEY, remainingPosts);
+                                refreshDiscussionPosts();
+                            } catch (error) {
+                                status.textContent = 'Không thể xóa bài đăng: ' + error.message;
+                                console.error('Không thể xóa bài đăng:', error);
+                            }
+                        });
+                        card.appendChild(deleteButton);
+                    }
+                    list.appendChild(card);
+                });
+            } catch (error) {
+                list.textContent = 'Không thể tải bài đăng: ' + error.message;
+                console.error('Không thể tải bài đăng:', error);
+            }
+        }
+
+        document.getElementById('discussion-class-select').addEventListener('change', function() {
+            refreshDiscussionPosts();
+        });
+
+        document.getElementById('discussion-post-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const status = document.getElementById('discussion-status');
+            const content = document.getElementById('discussion-post-content').value.trim();
+            const studentClass = getDiscussionClass();
+            if (!studentClass || !content) {
+                status.textContent = 'Hãy chọn lớp và nhập nội dung bài đăng.';
+                return;
+            }
+            try {
+                const posts = getStoredRecords(DISCUSSION_STORAGE_KEY);
+                posts.push({
+                    id: createRecordId(),
+                    classId: studentClass.id,
+                    author: currentRole === 'teacher' ? 'Giáo viên' : currentStudentName,
+                    role: currentRole,
+                    content: content,
+                    createdAt: new Date().toISOString(),
+                    replies: []
+                });
+                saveStoredRecords(DISCUSSION_STORAGE_KEY, posts);
+                document.getElementById('discussion-post-form').reset();
+                refreshDiscussionPosts();
+                status.textContent = 'Đã đăng bài lên lớp.';
+            } catch (error) {
+                status.textContent = 'Không thể đăng bài: ' + error.message;
+                console.error('Không thể đăng bài:', error);
+            }
+        });
+
+        function openInnerTab(evt, innerTabId) {
+            var i, tabContents, tabBtns;
+            var currentLesson = evt.currentTarget.closest('.lesson-section');
+            tabContents = currentLesson.getElementsByClassName("inner-tab-content");
+            for (i = 0; i < tabContents.length; i++) { tabContents[i].classList.remove("active"); }
+            tabBtns = currentLesson.getElementsByClassName("inner-tab-btn");
+            for (i = 0; i < tabBtns.length; i++) { tabBtns[i].classList.remove("active"); }
+            
+            document.getElementById(innerTabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function getSavedDriveLink() {
+            if (!currentStudentEmail) return '';
+            try {
+                return window.localStorage.getItem('student-drive-link:' + currentStudentEmail.toLowerCase()) || '';
+            } catch (error) {
+                console.error('Không thể đọc link Drive đã lưu trên thiết bị:', error);
+                return '';
+            }
+        }
+
+        document.getElementById('drive-submission-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const linkInput = document.getElementById('student-drive-link');
+            const status = document.getElementById('drive-submission-status');
+            const submitButton = form.querySelector('button[type="submit"]');
+            const driveLink = linkInput.value.trim();
+
+            if (currentRole !== 'student' || !currentStudentEmail || !currentClass) {
+                status.textContent = 'Vui lòng đăng nhập bằng tài khoản học sinh trước khi gửi link.';
+                return;
+            }
+
+            let parsedDriveLink;
+            try {
+                parsedDriveLink = new URL(driveLink);
+            } catch (error) {
+                status.textContent = 'Vui lòng nhập link Google Drive hợp lệ.';
+                return;
+            }
+            if (parsedDriveLink.protocol !== 'https:' ||
+                (parsedDriveLink.hostname !== 'drive.google.com' && parsedDriveLink.hostname !== 'docs.google.com')) {
+                status.textContent = 'Link phải bắt đầu bằng https://drive.google.com/ hoặc https://docs.google.com/.';
+                return;
+            }
+
+            if (!DRIVE_SUBMISSION_ENDPOINT) {
+                status.textContent = 'Chưa cấu hình URL Google Apps Script. Giáo viên cần triển khai Apps Script rồi cập nhật URL /exec trong mã hệ thống.';
+                return;
+            }
+
+            let endpoint;
+            try {
+                endpoint = new URL(DRIVE_SUBMISSION_ENDPOINT);
+            } catch (error) {
+                status.textContent = 'URL Google Apps Script chưa hợp lệ.';
+                return;
+            }
+            if (endpoint.protocol !== 'https:') {
+                status.textContent = 'URL Google Apps Script phải sử dụng HTTPS.';
+                return;
+            }
+
+            const submissionId = window.crypto && window.crypto.randomUUID
+                ? window.crypto.randomUUID()
+                : Date.now() + '-' + Math.random().toString(36).slice(2);
+            const responseFrame = document.createElement('iframe');
+            responseFrame.name = 'drive-submission-' + submissionId;
+            responseFrame.title = 'Xác nhận gửi link Drive';
+            responseFrame.hidden = true;
+            document.body.appendChild(responseFrame);
+
+            const fields = {
+                submissionId: submissionId,
+                studentName: currentStudentName,
+                studentEmail: currentStudentEmail,
+                className: currentClass.name,
+                driveUrl: driveLink
+            };
+            Object.keys(fields).forEach(function(name) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.value = fields[name];
+                input.dataset.driveSubmissionField = 'true';
+                form.appendChild(input);
+            });
+
+            let timeoutId;
+            function finishSubmission(message, isSuccess) {
+                window.clearTimeout(timeoutId);
+                window.removeEventListener('message', handleResponse);
+                form.querySelectorAll('[data-drive-submission-field]').forEach(function(input) {
+                    input.remove();
+                });
+                form.removeAttribute('action');
+                form.removeAttribute('method');
+                form.removeAttribute('target');
+                responseFrame.remove();
+                submitButton.disabled = false;
+                status.textContent = message;
+                if (isSuccess) {
+                    try {
+                        window.localStorage.setItem('student-drive-link:' + currentStudentEmail.toLowerCase(), driveLink);
+                    } catch (error) {
+                        status.textContent += ' Không thể lưu link trên thiết bị này để điền sẵn lần sau.';
+                        console.error('Không thể lưu link Drive trên thiết bị:', error);
+                    }
+                }
+            }
+
+            function handleResponse(messageEvent) {
+                const response = messageEvent.data;
+                const isResponseFrame = messageEvent.source === responseFrame.contentWindow;
+                const isAppsScriptSandbox = /^https:\/\/(?:[a-z0-9-]+-)?script\.googleusercontent\.com$/i.test(messageEvent.origin);
+                if ((!isResponseFrame && !isAppsScriptSandbox) ||
+                    !response || response.type !== 'drive-submission-result' ||
+                    response.submissionId !== submissionId) {
+                    return;
+                }
+                if (response.success) {
+                    finishSubmission('Đã ghi link Drive vào hòm thư nhận bài của giáo viên.', true);
+                } else {
+                    finishSubmission('Không thể ghi link vào Google Sheets: ' + (response.message || 'Lỗi không xác định.'), false);
+                }
+            }
+
+            window.addEventListener('message', handleResponse);
+            submitButton.disabled = true;
+            status.textContent = 'Đang gửi link Drive vào Google Sheets...';
+            form.action = endpoint.href;
+            form.method = 'post';
+            form.target = responseFrame.name;
+            timeoutId = window.setTimeout(function() {
+                finishSubmission('Chưa nhận được xác nhận từ Google Sheets. Hãy kiểm tra hòm thư trước khi gửi lại.', false);
+            }, 20000);
+            try {
+                form.submit();
+            } catch (error) {
+                finishSubmission('Không thể gửi link Drive: ' + error.message, false);
+                console.error('Không thể gửi link Drive:', error);
+            }
+        });
+
+        // --- 4. QUẢN LÝ BÀI TẬP GIÁO VIÊN GIAO ---
+        const ASSIGNMENT_DB_NAME = 'tram-khong-gian-ai';
+        const ASSIGNMENT_STORE_NAME = 'assignments';
+
+        function openAssignmentDatabase() {
+            return new Promise(function(resolve, reject) {
+                if (!window.indexedDB) {
+                    reject(new Error('Trình duyệt không hỗ trợ lưu trữ bài tập.'));
+                    return;
+                }
+
+                const request = window.indexedDB.open(ASSIGNMENT_DB_NAME, 1);
+                request.onupgradeneeded = function() {
+                    const database = request.result;
+                    if (!database.objectStoreNames.contains(ASSIGNMENT_STORE_NAME)) {
+                        database.createObjectStore(ASSIGNMENT_STORE_NAME, { keyPath: 'id' });
+                    }
+                };
+                request.onsuccess = function() { resolve(request.result); };
+                request.onerror = function() {
+                    reject(request.error || new Error('Không thể mở kho lưu bài tập.'));
+                };
+                request.onblocked = function() {
+                    reject(new Error('Kho bài tập đang được mở ở cửa sổ khác. Hãy tải lại trang rồi thử lại.'));
+                };
+            });
+        }
+
+        async function getAssignments() {
+            const database = await openAssignmentDatabase();
+            return new Promise(function(resolve, reject) {
+                const transaction = database.transaction(ASSIGNMENT_STORE_NAME, 'readonly');
+                const request = transaction.objectStore(ASSIGNMENT_STORE_NAME).getAll();
+                request.onsuccess = function() {
+                    resolve(request.result.sort(function(a, b) {
+                        return b.createdAt.localeCompare(a.createdAt);
+                    }));
+                };
+                request.onerror = function() {
+                    reject(request.error || new Error('Không thể đọc danh sách bài tập.'));
+                };
+                transaction.oncomplete = function() { database.close(); };
+                transaction.onerror = function() {
+                    database.close();
+                    reject(transaction.error || new Error('Lỗi khi đọc danh sách bài tập.'));
+                };
+                transaction.onabort = function() {
+                    database.close();
+                    reject(transaction.error || new Error('Đã hủy thao tác đọc bài tập.'));
+                };
+            });
+        }
+
+        async function saveAssignment(assignment) {
+            const database = await openAssignmentDatabase();
+            return new Promise(function(resolve, reject) {
+                const transaction = database.transaction(ASSIGNMENT_STORE_NAME, 'readwrite');
+                transaction.objectStore(ASSIGNMENT_STORE_NAME).put(assignment);
+                transaction.oncomplete = function() {
+                    database.close();
+                    resolve();
+                };
+                transaction.onerror = function() {
+                    database.close();
+                    reject(transaction.error || new Error('Không thể lưu bài tập.'));
+                };
+                transaction.onabort = function() {
+                    database.close();
+                    reject(transaction.error || new Error('Đã hủy thao tác lưu bài tập.'));
+                };
+            });
+        }
+
+        async function removeAssignment(assignmentId) {
+            const database = await openAssignmentDatabase();
+            return new Promise(function(resolve, reject) {
+                const transaction = database.transaction(ASSIGNMENT_STORE_NAME, 'readwrite');
+                transaction.objectStore(ASSIGNMENT_STORE_NAME).delete(assignmentId);
+                transaction.oncomplete = function() {
+                    database.close();
+                    resolve();
+                };
+                transaction.onerror = function() {
+                    database.close();
+                    reject(transaction.error || new Error('Không thể xóa bài tập.'));
+                };
+                transaction.onabort = function() {
+                    database.close();
+                    reject(transaction.error || new Error('Đã hủy thao tác xóa bài tập.'));
+                };
+            });
+        }
+
+        function createAssignmentCard(assignment, isTeacher) {
+            const card = document.createElement('article');
+            card.className = 'assignment-card';
+
+            const title = document.createElement('h3');
+            title.textContent = assignment.title;
+            card.appendChild(title);
+
+            const description = document.createElement('p');
+            description.textContent = assignment.description;
+            card.appendChild(description);
+
+            const metadata = document.createElement('p');
+            metadata.className = 'assignment-meta';
+            const createdAt = new Date(assignment.createdAt).toLocaleString('vi-VN');
+            metadata.textContent = 'Ngày giao: ' + createdAt +
+                (assignment.dueDate
+                    ? ' · Hạn nộp: ' + new Date(assignment.dueDate + 'T00:00:00').toLocaleDateString('vi-VN')
+                    : '');
+            card.appendChild(metadata);
+
+            if (assignment.attachment && assignment.attachment.blob) {
+                const downloadLink = document.createElement('a');
+                downloadLink.className = 'assignment-download';
+                downloadLink.href = '#';
+                downloadLink.textContent = '📎 Tải tài liệu: ' + assignment.attachment.name;
+                downloadLink.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const url = URL.createObjectURL(assignment.attachment.blob);
+                    const download = document.createElement('a');
+                    download.href = url;
+                    download.download = assignment.attachment.name;
+                    document.body.appendChild(download);
+                    download.click();
+                    download.remove();
+                    window.setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+                });
+                card.appendChild(downloadLink);
+            }
+
+            if (isTeacher) {
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.className = 'assignment-delete';
+                deleteButton.textContent = '🗑️ Xóa';
+                deleteButton.addEventListener('click', async function() {
+                    if (!window.confirm('Thầy/cô có chắc muốn xóa bài tập này không?')) return;
+                    try {
+                        await removeAssignment(assignment.id);
+                        await refreshAssignmentLists();
+                    } catch (error) {
+                        window.alert('Không thể xóa bài tập: ' + error.message);
+                    }
+                });
+                card.appendChild(deleteButton);
+            }
+
+            return card;
+        }
+
+        async function refreshAssignmentLists() {
+            const teacherList = document.getElementById('teacher-assignment-list');
+            const studentList = document.getElementById('student-assignment-list');
+            teacherList.replaceChildren();
+            studentList.replaceChildren();
+
+            try {
+                const assignments = await getAssignments();
+                if (assignments.length === 0) {
+                    teacherList.textContent = 'Chưa có bài tập nào được giao.';
+                    studentList.textContent = 'Hiện chưa có bài tập mới. Hãy quay lại sau nhé!';
+                    return;
+                }
+
+                assignments.forEach(function(assignment) {
+                    teacherList.appendChild(createAssignmentCard(assignment, true));
+                    studentList.appendChild(createAssignmentCard(assignment, false));
+                });
+            } catch (error) {
+                const message = 'Không thể tải danh sách bài tập: ' + error.message;
+                teacherList.textContent = message;
+                studentList.textContent = message;
+                console.error(message, error);
+            }
+        }
+
+        document.getElementById('teacher-assignment-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const submitButton = form.querySelector('button[type="submit"]');
+            const status = document.getElementById('teacher-assignment-status');
+            const fileInput = document.getElementById('assignment-file');
+            const file = fileInput.files[0];
+            const assignment = {
+                id: window.crypto && window.crypto.randomUUID
+                    ? window.crypto.randomUUID()
+                    : Date.now() + '-' + Math.random().toString(36).slice(2),
+                title: document.getElementById('assignment-title').value.trim(),
+                description: document.getElementById('assignment-description').value.trim(),
+                dueDate: document.getElementById('assignment-due-date').value,
+                createdAt: new Date().toISOString(),
+                attachment: file ? { name: file.name, blob: file } : null
+            };
+
+            if (!assignment.title || !assignment.description) {
+                status.textContent = 'Vui lòng nhập tên bài tập và hướng dẫn thực hiện.';
+                return;
+            }
+
+            submitButton.disabled = true;
+            status.textContent = 'Đang lưu bài tập...';
+            try {
+                await saveAssignment(assignment);
+                form.reset();
+                status.textContent = 'Đã đăng bài tập thành công. Học sinh có thể xem trong mục “Bài Tập Được Giao”.';
+                await refreshAssignmentLists();
+            } catch (error) {
+                status.textContent = 'Không thể đăng bài tập: ' + error.message;
+                console.error('Không thể lưu bài tập:', error);
+            } finally {
+                submitButton.disabled = false;
+            }
+        });
+
+        // --- 5. LOGIC MINIGAME BÀI 7 - HĐ 1 ---
+        function openMinigame() {
+            document.getElementById('minigameModal').style.display = 'flex';
+            document.getElementById('game-feedback').innerHTML = ''; 
+        }
+        function closeMinigame() { document.getElementById('minigameModal').style.display = 'none'; }
+        function playGame(isCorrect, message) {
+            var feedback = document.getElementById('game-feedback');
+            if(isCorrect) { feedback.innerHTML = "<span style='color: green; font-size: 16px;'>" + message + "</span>"; } 
+            else { feedback.innerHTML = "<span style='color: red; font-size: 16px;'>" + message + "</span>"; }
+        }
+    </script>
+</body>
+</html>

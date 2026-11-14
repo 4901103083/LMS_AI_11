@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bài 10 - Hướng dẫn giáo viên và đáp án gợi ý</title>
+    <style>
+        body { max-width: 900px; margin: 0 auto; padding: 24px; color: #202b38; font: 16px/1.6 Arial, sans-serif; }
+        h1, h2 { color: #8a4141; }
+        section { margin: 20px 0; padding: 16px; border: 1px solid #dccaca; border-radius: 10px; }
+        .note { background: #fff5f4; border-left: 5px solid #c96666; padding: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #817777; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #faeeee; }
+        @media print { body { max-width: none; padding: 0; } section { break-inside: avoid; } }
+    </style>
+</head>
+<body>
+    <h1>Bài 10 · Hướng dẫn giáo viên và đáp án gợi ý</h1>
+    <p class="note"><b>Tài liệu dành cho giáo viên.</b> Có thể in riêng bộ thẻ học sinh và phiếu MC10 trong tab Học liệu; không cần phát trang đáp án này.</p>
+
+    <section>
+        <h2>Tiến trình 2 tiết</h2>
+        <table>
+            <thead><tr><th>Hoạt động</th><th>Thời lượng</th><th>Điểm cần quan sát</th></tr></thead>
+            <tbody>
+                <tr><td>10.1 · Nhận diện 3 phần và hai loại thuật toán</td><td>15 phút</td><td>Cá nhân điền Input–Hidden–Output; nhóm giải thích có/không có nhãn.</td></tr>
+                <tr><td>10.2 · Bộ thẻ phân lớp/phân cụm</td><td>30 phút</td><td>Nhóm 3–4 dùng nhãn định trước ở phần A; tự chọn tiêu chí ở phần B.</td></tr>
+                <tr><td>10.3 · Làm quen Playground</td><td>10 phút</td><td>Theo cặp tìm dataset, hidden layers, số nơ-ron, Play/Reset và ranh giới phân loại.</td></tr>
+                <tr><td>10.4 · So sánh cấu hình</td><td>25 phút</td><td>Cùng dataset/điều kiện ban đầu; chỉ đổi một yếu tố; ghi ảnh và chỉ số quan sát.</td></tr>
+                <tr><td>10.5 · Lý giải, nộp MC10</td><td>10 phút</td><td>Ít nhất hai câu lý giải có bằng chứng; không khẳng định mô hình phức tạp hơn luôn tốt hơn.</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Đáp án/thảo luận gợi ý</h2>
+        <ul>
+            <li><b>Ba phần mạng:</b> Input nhận đặc trưng/dữ liệu; Hidden xử lý/tìm mẫu; Output đưa ra dự đoán. Đây là mô hình giải thích đơn giản, không cần đi vào công thức.</li>
+            <li><b>Phân lớp:</b> nhãn/danh mục được xác định trước; thẻ E gần nhãn Sôi động, F gần nhãn Thư giãn theo các ví dụ. Hãy hỏi học sinh nêu tiêu chí chứ không chỉ gọi tên nhãn.</li>
+            <li><b>Phân cụm:</b> chưa có nhãn cố định; nhóm tự chọn tiêu chí và giải thích kết quả. Một phương án là G–H (nhạc chậm, không lời, nghe khi tập trung), I–J (nhịp nhanh, năng lượng cao), K–L (guitar mộc, nhẹ/ngoài trời). Chấp nhận cách chia khác nếu nhất quán với tiêu chí đã nêu.</li>
+            <li><b>Playground:</b> chọn bộ dữ liệu giáo viên chỉ định, xác định nơi đổi kiến trúc và cách chạy/reset; không yêu cầu học sinh giải thích toán học hay lập trình.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Hướng dẫn so sánh Playground</h2>
+        <ol>
+            <li>Chốt dataset và điều kiện khởi đầu; lưu cấu hình A.</li>
+            <li>Chọn đúng một biến kiến trúc để đổi cho cấu hình B (ví dụ số nơ-ron trong một lớp ẩn); giữ các yếu tố còn lại như nhau.</li>
+            <li>Ghi số lớp ẩn, số nơ-ron, ranh giới phân loại và độ lỗi/chỉ số màn hình sau khi chạy.</li>
+            <li>Học sinh mô tả điều quan sát thấy, không suy rộng từ một lần chạy thành quy luật chung. Nếu giao diện/chỉ số khác phiên bản, ghi lại đúng nhãn hiển thị.</li>
+        </ol>
+        <p>Nếu thiếu Internet, dùng ảnh giao diện do giáo viên chuẩn bị hoặc phiếu mô tả hai cấu hình mẫu; ghi rõ phương án thay thế, không yêu cầu học sinh giả vờ đã chạy mô phỏng.</p>
+    </section>
+
+    <section>
+        <h2>Kiểm tra MC10</h2>
+        <ul>
+            <li>Có ảnh/hình thay thế của ít nhất hai cấu hình.</li>
+            <li>Ghi thông số lớp ẩn và nơ-ron, cùng dataset được dùng.</li>
+            <li>Nêu khác biệt quan sát được về ranh giới phân loại/độ lỗi.</li>
+            <li>Có ít nhất hai câu lý giải lựa chọn dựa trên bằng chứng, không chỉ dựa vào số lớp.</li>
+        </ul>
+    </section>
+</body>
+</html>

@@ -78,7 +78,9 @@
         }
 
         .sidebar {
-            width: 280px; background-color: var(--secondary); border-right: var(--border-style);
+            width: 280px; height: 100vh; min-height: 0; flex-shrink: 0;
+            overflow-y: auto; overflow-x: hidden;
+            background-color: var(--secondary); border-right: var(--border-style);
             padding: 20px; display: flex; flex-direction: column; box-shadow: 5px 0 15px rgba(0,0,0,0.05); z-index: 10;
         }
         .logo { font-size: 26px; font-weight: 800; text-align: center; margin-bottom: 30px; background: #fff; padding: 10px; border: var(--border-style); border-radius: var(--border-radius); box-shadow: 4px 4px 0px #333; }
@@ -90,9 +92,21 @@
         .nav-btn.home-btn { background-color: var(--yellow); color: #333; }
         .nav-btn.home-btn.active { background-color: #ffcc00; }
 
-        .main-content { flex: 1; padding: 30px 40px; overflow-y: auto; }
+        .main-content { flex: 1; min-height: 0; padding: 30px 40px; overflow-y: auto; }
         .lesson-section { display: none; animation: fadeIn 0.5s ease; }
         .lesson-section.active { display: block; }
+        .lesson-stepper {
+            position: fixed; right: 24px; bottom: 24px; z-index: 20;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .lesson-stepper[hidden] { display: none; }
+        .lesson-stepper button {
+            width: 48px; height: 48px; border: 2px solid #333; border-radius: 14px;
+            background: var(--yellow); color: #333; box-shadow: 3px 3px 0 #333;
+            font-size: 22px; font-weight: 800; cursor: pointer;
+        }
+        .lesson-stepper button:hover:not(:disabled) { transform: translateY(-2px); }
+        .lesson-stepper button:disabled { opacity: 0.45; cursor: not-allowed; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* HÌNH ẢNH & THÀNH PHẦN */
@@ -201,13 +215,15 @@
 
         @media (max-width: 768px) {
             #main-app { flex-direction: column; }
-            .sidebar { width: auto; border-right: none; border-bottom: var(--border-style); flex-direction: row; overflow-x: auto; padding: 10px; }
+            .sidebar { width: 100%; height: auto; max-height: 120px; box-sizing: border-box; border-right: none; border-bottom: var(--border-style); flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 10px; }
             .logo { display: none; }
             .nav-btn { margin-bottom: 0; margin-right: 10px; white-space: nowrap; }
             .home-grid, .content-grid { grid-template-columns: 1fr; }
             .hero-section { flex-direction: column; text-align: center; }
             .inner-tabs { flex-direction: column; }
             .game-badge { position: static; display: inline-block; margin-top: 10px; }
+            .main-content { width: 100%; box-sizing: border-box; padding: 20px; }
+            .lesson-stepper { right: 14px; bottom: 14px; }
         }
     </style>
 </head>
@@ -1004,6 +1020,7 @@
                             <div class="plan-step"><b>HĐ 3 (Vận dụng):</b> Sắp xếp 5 bước vận hành thực tế. Trải nghiệm gỡ lỗi mô hình: Huấn luyện ➜ Kiểm thử ➜ Điều chỉnh 1 yếu tố ➜ Huấn luyện lại. Ghi chép "Nhật ký tối ưu hóa".</div>
                             <div class="plan-step"><b>HĐ 4 (Ghi nhớ):</b> Chốt lại vòng lặp tối ưu hóa. Đọc "Bài toán 20 phút của NASA" để tìm hiểu công nghệ Edge AI (AI tại biên), cắt tỉa (Pruning) và lượng tử hóa (Quantization).</div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -1031,6 +1048,10 @@
             </div>
         </div>
 
+        <div class="lesson-stepper" id="lesson-stepper" aria-label="Điều hướng bài học" hidden>
+            <button type="button" id="previous-lesson" aria-label="Bài học trước" title="Bài học trước" onclick="moveLesson(-1)">↑</button>
+            <button type="button" id="next-lesson" aria-label="Bài học tiếp theo" title="Bài học tiếp theo" onclick="moveLesson(1)">↓</button>
+        </div>
     </div>
 
 
@@ -1190,8 +1211,35 @@
             } else if (btnIdToActivate) {
                 document.getElementById(btnIdToActivate).classList.add("active");
             }
+            document.querySelector('.main-content').scrollTop = 0;
+            const activeLessonNav = document.querySelector('.student-lesson-nav.active');
+            if (activeLessonNav) activeLessonNav.scrollIntoView({ block: 'nearest' });
+            updateLessonStepper();
             if (lessonId === 'class-discussion') refreshDiscussionPosts();
             if (lessonId === 'teacher-classes') renderTeacherClasses();
+        }
+
+        function updateLessonStepper() {
+            const lessonButtons = Array.from(document.querySelectorAll('.student-lesson-nav'));
+            const activeIndex = lessonButtons.findIndex(function(button) {
+                return button.classList.contains('active');
+            });
+            const stepper = document.getElementById('lesson-stepper');
+            const isLessonView = currentRole === 'student' && activeIndex >= 0;
+            stepper.hidden = !isLessonView;
+            if (isLessonView) {
+                document.getElementById('previous-lesson').disabled = activeIndex === 0;
+                document.getElementById('next-lesson').disabled = activeIndex === lessonButtons.length - 1;
+            }
+        }
+
+        function moveLesson(direction) {
+            const lessonButtons = Array.from(document.querySelectorAll('.student-lesson-nav'));
+            const activeIndex = lessonButtons.findIndex(function(button) {
+                return button.classList.contains('active');
+            });
+            const targetButton = lessonButtons[activeIndex + direction];
+            if (targetButton && !targetButton.disabled) targetButton.click();
         }
 
         const CLASS_STORAGE_KEY = 'tram-ai-classes';
